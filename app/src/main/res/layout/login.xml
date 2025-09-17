@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/tvLogin"
-        android:layout_width="158dp"
-        android:layout_height="44dp"
+        android:layout_width="113dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="Login"
@@ -25,11 +25,12 @@
         android:id="@+id/edUsername"
         android:layout_width="345dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="596dp"
+        android:layout_marginBottom="608dp"
         android:text="UserName"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSignin"
         app:layout_constraintVertical_bias="0.037" />
@@ -38,11 +39,12 @@
         android:id="@+id/edPassword"
         android:layout_width="345dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="540dp"
+        android:layout_marginBottom="552dp"
         android:text="Password"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSignin"
         app:layout_constraintVertical_bias="0.147" />
