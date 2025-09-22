@@ -78,4 +78,14 @@
             android:textSize="20sp" />
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="69dp" />
+
+    <ImageView
+        android:id="@+id/imgIconPlay"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        app:srcCompat="@drawable/play_icon" />
+
 </LinearLayout>
