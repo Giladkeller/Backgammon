@@ -12,10 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BackGammonFinal">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".users"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".GameActivity"
             android:exported="false" />
         <activity
             android:name=".OpenActivity"
