@@ -79,7 +79,7 @@ public class OpenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userName = editDUsername.getText().toString().trim();
-                intent = new Intent(OpenActivity.this, users.class);
+                intent = new Intent(OpenActivity.this, MainActivity.class);
                 intent.putExtra("USERNAME_KEY" , userName);
 
                 if (editDUsername.getText().toString().isEmpty()||editDPassword.getText().toString().isEmpty()||editDEmail.getText().toString().isEmpty()){
@@ -131,7 +131,7 @@ public class OpenActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 userName = editDUsername.getText().toString().trim();
-                intent = new Intent(OpenActivity.this, users.class);
+                intent = new Intent(OpenActivity.this, MainActivity.class);
                 intent.putExtra("USERNAME_KEY" , userName);
 
                 if (editDUsername.getText().toString().isEmpty()||editDPassword.getText().toString().isEmpty()){
