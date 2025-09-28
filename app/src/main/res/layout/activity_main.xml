@@ -1,31 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#ffddff"
     android:id="@+id/main"
     tools:context=".MainActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp"
+        android:layout_gravity="right"
+        android:background="#faadff"
+        app:layout_constraintBottom_toTopOf="@+id/imgBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.039"
+        app:title="BackGammon"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="393dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#aa00ff"
+        android:textSize="40sp"
+        android:textStyle="bold|italic"
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"
-            tools:ignore="SpeakableTextPresentCheck" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+    <TextView
+        android:id="@+id/tvHead"
+        android:layout_width="393dp"
+        android:layout_height="79dp"
+        android:gravity="center"
+        android:text="Main Menu"
+        android:textSize="48sp"
+        android:textStyle="bold|italic"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="154dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#555eee"
+        android:text="Register" />
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+        android:layout_height="18dp" />
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="162dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#555eee"
+        android:text="Login" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="18dp" />
+    <Button
+        android:id="@+id/btnMusic"
+        android:layout_width="154dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#555eee"
+        android:text="MusicList" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+    <Button
+        android:id="@+id/btnScoreList"
+        android:layout_width="154dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#555eee"
+        android:text="ScoreList" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="21dp" />
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="154dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#555eee"
+        android:text="Exit" />
+</LinearLayout>
