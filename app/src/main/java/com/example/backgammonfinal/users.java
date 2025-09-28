@@ -134,7 +134,7 @@ public class users extends AppCompatActivity implements View.OnClickListener {
                 builder.show();
             }
             else {
-                intent = new Intent(users.this, MainActivity.class);
+                intent = new Intent(users.this, GameActivity.class);
                 startActivity(intent);
                 finish();
             }
