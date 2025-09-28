@@ -1,6 +1,7 @@
 package com.example.backgammonfinal;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import java.util.Locale;
 
 public class users extends AppCompatActivity implements View.OnClickListener {
 
+    private AlertDialog.Builder builder;
     Intent intent;
 
     private String userName;
@@ -122,9 +124,20 @@ public class users extends AppCompatActivity implements View.OnClickListener {
             finish();
         }
         if (v.getId() == imgPlay.getId()){
-            intent = new Intent(users.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            if (p2.getText().toString().isEmpty()){
+                builder = new AlertDialog.Builder(users.this);
+                builder.setTitle("Error");
+                builder.setMessage("UserName Null");
+                builder.setPositiveButton("ok", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                builder.show();
+            }
+            else {
+                intent = new Intent(users.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
         if (v.getId() == contact1.getId()) {
             this.playerNum = 1;
