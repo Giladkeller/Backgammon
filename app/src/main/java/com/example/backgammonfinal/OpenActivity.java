@@ -1,8 +1,11 @@
 package com.example.backgammonfinal;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +22,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class OpenActivity extends AppCompatActivity {
-
+    // **** SQLite database
+    public  DatabaseHelper dbHelper;
+    private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList;
+    //SharedPreferences save user name in this phone
+    private SharedPreferences sharedPreferences;
+    private String savedUsername;
 
     private AlertDialog.Builder builder;
     Intent intent;
@@ -33,7 +41,9 @@ public class OpenActivity extends AppCompatActivity {
     private Button btnDGoBack;
 
     private String userName;
+    androidx.appcompat.widget.Toolbar toolbar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,12 +113,12 @@ public class OpenActivity extends AppCompatActivity {
 
         loginDialog.setCancelable(true);
 
+
         tvDMessage = (TextView) loginDialog.findViewById(R.id.tvLogin);
         btnNewAccount = (TextView) loginDialog.findViewById(R.id.btnNewAccount);
         editDUsername = (EditText) loginDialog.findViewById(R.id.edUsername);
         editDPassword = (EditText) loginDialog.findViewById(R.id.edPassword);
         btnDGoBack = (Button) loginDialog.findViewById(R.id.btnLogin);
-
         btnNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
