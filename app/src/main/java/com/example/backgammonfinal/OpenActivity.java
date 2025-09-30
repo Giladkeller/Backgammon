@@ -56,7 +56,9 @@ public class OpenActivity extends AppCompatActivity {
         });
 
         new Handler(Looper.getMainLooper()).postDelayed(() ->{
-            createLoginDialog();
+            Intent intent = new Intent(OpenActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }, 1500);
     }
 
