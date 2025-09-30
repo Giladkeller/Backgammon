@@ -50,7 +50,7 @@ public class users extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_users);
 
         intent = getIntent();
-        userName = intent.getStringExtra("USERNAME_KEY");
+        userName = intent.getStringExtra("USERNAME");
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -119,7 +119,7 @@ public class users extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == imgBack.getId()){
-            intent = new Intent(users.this , OpenActivity.class);
+            intent = new Intent(users.this , MainActivity.class);
             startActivity(intent);
             finish();
         }
