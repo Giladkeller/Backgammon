@@ -10,8 +10,8 @@
     <!-- Registration Section -->
     <TextView
         android:id="@+id/tvLogin"
-        android:layout_width="116dp"
-        android:layout_height="68dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingBottom="16dp"
         android:text="LOGIN"
