@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.btnLogin.setText("Login ");
         }
         else {
-            tvUserName.setText(" Wellcom " + this.savedUsername + "! ");
+            tvUserName.setText(" Wellcome " + this.savedUsername + "! ");
             this.btnRegister.setText("Sign in");
         }
         btnMusic = (Button) findViewById(R.id.btnMusic);
