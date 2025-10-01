@@ -82,10 +82,26 @@
         android:layout_width="match_parent"
         android:layout_height="69dp" />
 
-    <ImageView
-        android:id="@+id/imgIconPlay"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="94dp"
-        app:srcCompat="@drawable/play_icon" />
+        android:layout_height="99dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imgIconPlay"
+            android:layout_width="107dp"
+            android:layout_height="97dp"
+            app:srcCompat="@drawable/play_icon" />
+
+        <Space
+            android:layout_width="138dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </LinearLayout>
