@@ -45,6 +45,7 @@
             tools:ignore="MissingClass">
 
             <LinearLayout
+                android:id="@+id/lL12"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="10dp"
@@ -84,6 +85,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL11"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -92,6 +94,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL10"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -100,6 +103,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL9"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="top|center"
@@ -107,6 +111,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL8"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="top|center"
@@ -133,6 +138,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL7"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="top|center"
@@ -146,6 +152,7 @@
                 android:orientation="vertical" />
 
             <LinearLayout
+                android:id="@+id/lL6"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="12dp"
@@ -185,6 +192,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL5"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="2dp"
@@ -193,6 +201,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL4"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -201,6 +210,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL3"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="2dp"
@@ -209,6 +219,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL2"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="top|center"
@@ -216,6 +227,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL1"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginEnd="12dp"
@@ -336,6 +348,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL13"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="10dp"
@@ -376,6 +389,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL14"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -384,6 +398,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL15"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -392,6 +407,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL16"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="bottom|center"
@@ -399,6 +415,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL17"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="bottom|center"
@@ -425,6 +442,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL18"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="bottom|center"
@@ -438,6 +456,7 @@
                 android:orientation="vertical" />
 
             <LinearLayout
+                android:id="@+id/lL19"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="12dp"
@@ -477,6 +496,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lL20"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="2dp"
@@ -485,6 +505,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL21"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="1dp"
@@ -493,6 +514,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL22"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginStart="2dp"
@@ -501,6 +523,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL23"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:gravity="bottom|center"
@@ -508,6 +531,7 @@
                 app:layout_columnWeight="1" />
 
             <LinearLayout
+                android:id="@+id/lL24"
                 android:layout_width="0dp"
                 android:layout_height="160dp"
                 android:layout_marginEnd="12dp"
@@ -544,7 +568,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/imgCubes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -563,35 +587,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="93dp"
+            android:background="#C08431"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgC1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/cube_1" />
+                android:src="@drawable/cube4" />
 
             <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgC2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/cube_5" />
+                android:src="@drawable/cube2" />
 
             <ImageView
-                android:id="@+id/imageView36"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgC3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/cube_1" />
+                android:src="@drawable/cube1" />
 
             <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgC4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/cube_6" />
+                android:src="@drawable/cube6" />
         </LinearLayout>
 
     </LinearLayout>
