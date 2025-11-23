@@ -5,8 +5,10 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -80,14 +82,20 @@ public class Game extends Fragment implements View.OnClickListener {
         return v;
 
     }
+
     ImageView img1;
     ImageView img2;
     ImageView img3;
     LinearLayout selectedLayout = null, selectedLayout2 = null;
 
+    String whiteTurn = "white";
+    String brownTurn = "brown";
+    String turn = "white";
+
     @Override
     public void onClick(View view) {
-        if (imgCubes.getId() == view.getId()){
+        //throw cubes
+        if (imgCubes.getId() == view.getId()) {
             for (int i = 0; i < 24; i++) {
                 layouts[i].setBackgroundColor(Color.TRANSPARENT);
             }
@@ -107,64 +115,94 @@ public class Game extends Fragment implements View.OnClickListener {
                 imgC4.setVisibility(View.VISIBLE);
             }
         }
+
+        //move peace
+        //check if layouts[i] + rndCube1 >= 24
         if (selectedLayout == null && selectedLayout2 == null) {
             for (int i = 0; i < 24; i++) {
-                if (view.getId() == layouts[i].getId() && layouts[i].getChildAt(0) != null) {
-                    selectedLayout = layouts[i];
-                    if (rndCube1 != 0) {
-                        int targetIndex = i + rndCube1;
-                        if (targetIndex >= 24) {
-                            layouts[i].setBackgroundColor(Color.RED);
-                            selectedLayout = null;
-                            //return;
-                        }
+                if (layouts[i].getChildAt(0) != null) {
+                    ImageView imChild = (ImageView) layouts[i].getChildAt(0);
+                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+                    if (imChild.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                        if (view.getId() == layouts[i].getId()) {
+                            selectedLayout = layouts[i];
+                            if (rndCube1 != 0) {
+                                int targetIndex;
+                                if (turn.equals(whiteTurn)) {
+                                    targetIndex = i - rndCube1;
+                                } else {
+                                    targetIndex = i + rndCube1;
+                                }
+                                if (targetIndex >= 24 || targetIndex < 0) {
+                                    layouts[i].setBackgroundColor(Color.RED);
+                                    selectedLayout = null;
+                                    return;
+                                }
 
-                        for (int j = 0; j < 24; j++) {
-                            layouts[j].setBackgroundColor(Color.TRANSPARENT);
-                        }
+                                //clean all color
+                                for (int j = 0; j < 24; j++) {
+                                    layouts[j].setBackgroundColor(Color.TRANSPARENT);
+                                }
 
-                        img1 = (ImageView) layouts[i].getChildAt(0);
-                        View child = layouts[targetIndex].getChildAt(0);
-                        if (child == null) {
-                            layouts[targetIndex].setBackgroundColor(Color.GREEN);
-                        } else {
-                            img2 = (ImageView) child;
-                            if (img1.getDrawable() != null && img2.getDrawable() != null &&
-                                    img1.getDrawable().getConstantState() == img2.getDrawable().getConstantState()) {
-                                layouts[targetIndex].setBackgroundColor(Color.GREEN);
-                            } else {
-                                layouts[targetIndex].setBackgroundColor(Color.RED);
-                                selectedLayout = null;
+                                //check if can move peace 1
+                                img1 = (ImageView) layouts[i].getChildAt(0);
+                                View child = layouts[targetIndex].getChildAt(0);
+                                if (child == null) {
+                                    layouts[targetIndex].setBackgroundColor(Color.GREEN);
+                                } else {
+                                    img2 = (ImageView) child;
+                                    if (img1.getDrawable() != null && img2.getDrawable() != null &&
+                                            img1.getDrawable().getConstantState() == img2.getDrawable().getConstantState()) {
+                                        layouts[targetIndex].setBackgroundColor(Color.GREEN);
+                                    } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
+                                        layouts[targetIndex].setBackgroundColor(Color.GREEN);
+                                    } else {
+                                        layouts[targetIndex].setBackgroundColor(Color.RED);
+                                        selectedLayout = null;
+                                    }
+                                }
+                            }
+
+                            //check if layouts[i] + rndCube2 >= 24
+                            if (rndCube2 != 0) {
+                                int targetIndex2;
+                                if (turn.equals(whiteTurn)) {
+                                    targetIndex2 = i - rndCube2;
+                                } else {
+                                    targetIndex2 = i + rndCube2;
+                                }
+                                if (targetIndex2 >= 24 || targetIndex2 < 0) {
+                                    layouts[i].setBackgroundColor(Color.RED);
+                                    selectedLayout2 = null;
+                                    return;
+                                }
+
+                                //check if can move peace 2
+                                img1 = (ImageView) layouts[i].getChildAt(0);
+                                View child2 = layouts[targetIndex2].getChildAt(0);
+                                if (child2 == null) {
+                                    layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+                                } else {
+                                    img3 = (ImageView) child2;
+                                    if (img1.getDrawable() != null && img3.getDrawable() != null &&
+                                            img1.getDrawable().getConstantState() == img3.getDrawable().getConstantState()) {
+                                        layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+                                    } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex2].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
+                                        layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+                                    } else {
+                                        layouts[targetIndex2].setBackgroundColor(Color.RED);
+                                        selectedLayout2 = null;
+                                    }
+                                }
+                                break;
                             }
                         }
-                    }
-                    if (rndCube2 != 0) {
-                        int targetIndex2 = i + rndCube2;
-                        if (targetIndex2 >= 24) {
-                            layouts[i].setBackgroundColor(Color.RED);
-                            selectedLayout2 = null;
-                            //return;
-                        }
-
-                        img1 = (ImageView) layouts[i].getChildAt(0);
-                        View child2 = layouts[targetIndex2].getChildAt(0);
-                        if (child2 == null) {
-                            layouts[targetIndex2].setBackgroundColor(Color.GREEN);
-                        } else {
-                            img3 = (ImageView) child2;
-                            if (img1.getDrawable() != null && img3.getDrawable() != null &&
-                                    img1.getDrawable().getConstantState() == img3.getDrawable().getConstantState()) {
-                                layouts[targetIndex2].setBackgroundColor(Color.GREEN);
-                            } else {
-                                layouts[targetIndex2].setBackgroundColor(Color.RED);
-                                selectedLayout2 = null;
-                            }
-                        }
-                        break;
                     }
                 }
             }
-        } else {
+        }
+        //if tap on one linear
+        else {
             for (int i = 0; i < 24; i++) {
                 if (layouts[i].getBackground() != null && ((ColorDrawable) layouts[i].getBackground()).getColor() == Color.GREEN && view.getId() == layouts[i].getId()) {
 
@@ -176,6 +214,7 @@ public class Game extends Fragment implements View.OnClickListener {
                         }
                     }
 
+                    //move
                     ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
                     selectedLayout.removeViewAt(0);
                     layouts[i].addView(movingImg);
@@ -186,29 +225,49 @@ public class Game extends Fragment implements View.OnClickListener {
                         else
                             imgC3.setVisibility(View.INVISIBLE);
                     } else {
-                        if (i - selectedIndex == rndCube1) {
-                            rndCube1 = 0;
-                            imgC1.setVisibility(View.INVISIBLE);
-                        }
-                        else {
-                            if (i - selectedIndex == rndCube2) {
+                        if (turn.equals(whiteTurn)) {
+                            if (selectedIndex - i == rndCube1) {
+                                rndCube1 = 0;
+                                imgC1.setVisibility(View.INVISIBLE);
+                            } else {
+                                if (selectedIndex - i == rndCube2) {
+                                    rndCube2 = 0;
+                                    imgC2.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        } else {
+                            if (i - selectedIndex == rndCube1) {
+                                rndCube1 = 0;
+                                imgC1.setVisibility(View.INVISIBLE);
+                            } else {
+                                if (i - selectedIndex == rndCube2) {
                                     rndCube2 = 0;
                                     imgC2.setVisibility(View.INVISIBLE);
                                 }
                             }
                         }
-                        break;
                     }
+                    break;
                 }
+            }
 
-                for (int j = 0; j < 24; j++) {
-                    layouts[j].setBackgroundColor(Color.TRANSPARENT);
-                }
+            for (int j = 0; j < 24; j++) {
+                layouts[j].setBackgroundColor(Color.TRANSPARENT);
+            }
 
-                selectedLayout = null;
+            selectedLayout = null;
+        }
+        if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE) {
+            if (turn.equals(whiteTurn)) {
+                turn = brownTurn;
+                return;
+            }
+            if (turn.equals(brownTurn)) {
+                turn = whiteTurn;
             }
         }
-
     }
+
+}
 
 
