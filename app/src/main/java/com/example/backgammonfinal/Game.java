@@ -40,7 +40,7 @@ public class Game extends Fragment implements View.OnClickListener {
 
     private LinearLayout[] layouts;//= {R.id.lL1, R.id.lL2, R.id.lL3, R.id.lL4, R.id.lL5, R.id.lL6, R.id.lL7, R.id.lL8, R.id.lL9, R.id.lL10, R.id.lL11, R.id.lL12, R.id.lL13, R.id.lL14, R.id.lL15, R.id.lL16, R.id.lL17, R.id.lL18, R.id.lL19, R.id.lL20, R.id.lL21, R.id.lL22, R.id.lL23, R.id.lL24};
 
-    private LinearLayout layout;
+    private LinearLayout layout, iLEat;
     private ImageView imgCubes, imgC1, imgC2, imgC3, imgC4;
 
     //    private LinearLayout lL1, lL2, lLwhite3, lLwhite4, lLwhite5, lLwhite6, lLwhite7, lLwhite8, lLwhite9, lLwhite10, lLwhite11, lLwhite12, lLBlack1, lLBlack2, lLBlack3, lLBlack4, lLBlack5, lLBlack6, lLBlack7, lLBlack8, lLBlack9, lLBlack10, lLBlack11, lLBlack12;
@@ -68,6 +68,9 @@ public class Game extends Fragment implements View.OnClickListener {
             layouts[i] = (LinearLayout) v.findViewById(resID);
             layouts[i].setOnClickListener(this);
         }
+        iLEat = (LinearLayout) v.findViewById(R.id.lLEat);
+        iLEat.setOnClickListener(this);
+
         imgC1 = (ImageView) v.findViewById(R.id.imgC1);
         imgC2 = (ImageView) v.findViewById(R.id.imgC2);
         imgC3 = (ImageView) v.findViewById(R.id.imgC3);
@@ -116,6 +119,7 @@ public class Game extends Fragment implements View.OnClickListener {
             }
         }
 
+        boolean eat = false;
         //move peace
         //check if layouts[i] + rndCube1 >= 24
         if (selectedLayout == null && selectedLayout2 == null) {
@@ -189,6 +193,7 @@ public class Game extends Fragment implements View.OnClickListener {
                                         layouts[targetIndex2].setBackgroundColor(Color.GREEN);
                                     } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex2].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
                                         layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+                                        eat = true;
                                     } else {
                                         layouts[targetIndex2].setBackgroundColor(Color.RED);
                                         selectedLayout2 = null;
@@ -215,38 +220,51 @@ public class Game extends Fragment implements View.OnClickListener {
                     }
 
                     //move
-                    ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
-                    selectedLayout.removeViewAt(0);
-                    layouts[i].addView(movingImg);
-                    layouts[i].setBackgroundColor(Color.TRANSPARENT);
-                    if (imgC3.getVisibility() == View.VISIBLE) {
-                        if (imgC4.getVisibility() == View.VISIBLE)
-                            imgC4.setVisibility(View.INVISIBLE);
-                        else
-                            imgC3.setVisibility(View.INVISIBLE);
-                    } else {
-                        if (turn.equals(whiteTurn)) {
-                            if (selectedIndex - i == rndCube1) {
-                                rndCube1 = 0;
-                                imgC1.setVisibility(View.INVISIBLE);
-                            } else {
-                                if (selectedIndex - i == rndCube2) {
-                                    rndCube2 = 0;
-                                    imgC2.setVisibility(View.INVISIBLE);
-                                }
+                        if (selectedLayout.getChildAt(0) != null && layouts[i].getChildAt(0) != null) {
+                            img1 = (ImageView) selectedLayout.getChildAt(0);
+                            img2 = (ImageView) layouts[i].getChildAt(0);
+                            if (img1.getDrawable() != null && img2.getDrawable() != null && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
+                                ImageView movingImgEat1 = (ImageView) layouts[i].getChildAt(0);
+                                layouts[i].removeViewAt(0);
+                                iLEat.addView(movingImgEat1);
+                                ImageView movingImgEat2 = (ImageView) selectedLayout.getChildAt(0);
+                                selectedLayout.removeViewAt(0);
+                                layouts[i].addView(movingImgEat2);
+                                layouts[i].setBackgroundColor(Color.TRANSPARENT);
                             }
+                        }
+                        ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
+                        selectedLayout.removeViewAt(0);
+                        layouts[i].addView(movingImg);
+                        layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                        if (imgC3.getVisibility() == View.VISIBLE) {
+                            if (imgC4.getVisibility() == View.VISIBLE)
+                                imgC4.setVisibility(View.INVISIBLE);
+                            else
+                                imgC3.setVisibility(View.INVISIBLE);
                         } else {
-                            if (i - selectedIndex == rndCube1) {
-                                rndCube1 = 0;
-                                imgC1.setVisibility(View.INVISIBLE);
+                            if (turn.equals(whiteTurn)) {
+                                if (selectedIndex - i == rndCube1) {
+                                    rndCube1 = 0;
+                                    imgC1.setVisibility(View.INVISIBLE);
+                                } else {
+                                    if (selectedIndex - i == rndCube2) {
+                                        rndCube2 = 0;
+                                        imgC2.setVisibility(View.INVISIBLE);
+                                    }
+                                }
                             } else {
-                                if (i - selectedIndex == rndCube2) {
-                                    rndCube2 = 0;
-                                    imgC2.setVisibility(View.INVISIBLE);
+                                if (i - selectedIndex == rndCube1) {
+                                    rndCube1 = 0;
+                                    imgC1.setVisibility(View.INVISIBLE);
+                                } else {
+                                    if (i - selectedIndex == rndCube2) {
+                                        rndCube2 = 0;
+                                        imgC2.setVisibility(View.INVISIBLE);
+                                    }
                                 }
                             }
                         }
-                    }
                     break;
                 }
             }
