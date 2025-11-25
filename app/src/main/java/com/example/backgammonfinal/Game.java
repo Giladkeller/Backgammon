@@ -5,17 +5,14 @@ import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -28,8 +25,6 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +63,7 @@ public class Game extends Fragment implements View.OnClickListener {
             layouts[i] = (LinearLayout) v.findViewById(resID);
             layouts[i].setOnClickListener(this);
         }
-        iLEat = (LinearLayout) v.findViewById(R.id.lLEat);
+        iLEat = (LinearLayout) v.findViewById(R.id.iLEat);
         iLEat.setOnClickListener(this);
 
         imgC1 = (ImageView) v.findViewById(R.id.imgC1);
@@ -206,6 +201,7 @@ public class Game extends Fragment implements View.OnClickListener {
                 }
             }
         }
+
         //if tap on one linear
         else {
             for (int i = 0; i < 24; i++) {
