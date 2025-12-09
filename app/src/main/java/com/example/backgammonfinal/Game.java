@@ -93,24 +93,26 @@ public class Game extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         //throw cubes
-        if (imgCubes.getId() == view.getId()) {
-            for (int i = 0; i < 24; i++) {
-                layouts[i].setBackgroundColor(Color.TRANSPARENT);
-            }
-            imgC3.setVisibility(View.INVISIBLE);
-            imgC4.setVisibility(View.INVISIBLE);
-            rndCube1 = rnd.nextInt(6) + 1;
-            imgC1.setImageResource(getResources().getIdentifier("cube" + rndCube1, "drawable", getActivity().getPackageName()));
-            imgC1.setVisibility(View.VISIBLE);
-            rndCube2 = rnd.nextInt(6) + 1;
-            imgC2.setImageResource(getResources().getIdentifier("cube" + rndCube2, "drawable", getActivity().getPackageName()));
-            imgC2.setVisibility(View.VISIBLE);
+        if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE && imgC3.getVisibility() == View.INVISIBLE && imgC4.getVisibility() == View.INVISIBLE) {
+            if (imgCubes.getId() == view.getId()) {
+                for (int i = 0; i < 24; i++) {
+                    layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                }
+                imgC3.setVisibility(View.INVISIBLE);
+                imgC4.setVisibility(View.INVISIBLE);
+                rndCube1 = rnd.nextInt(6) + 1;
+                imgC1.setImageResource(getResources().getIdentifier("cube" + rndCube1, "drawable", getActivity().getPackageName()));
+                imgC1.setVisibility(View.VISIBLE);
+                rndCube2 = rnd.nextInt(6) + 1;
+                imgC2.setImageResource(getResources().getIdentifier("cube" + rndCube2, "drawable", getActivity().getPackageName()));
+                imgC2.setVisibility(View.VISIBLE);
 
-            if (rndCube1 == rndCube2) {
-                imgC3.setImageResource(getResources().getIdentifier("cube" + rndCube1, "drawable", getActivity().getPackageName()));
-                imgC4.setImageResource(getResources().getIdentifier("cube" + rndCube2, "drawable", getActivity().getPackageName()));
-                imgC3.setVisibility(View.VISIBLE);
-                imgC4.setVisibility(View.VISIBLE);
+                if (rndCube1 == rndCube2) {
+                    imgC3.setImageResource(getResources().getIdentifier("cube" + rndCube1, "drawable", getActivity().getPackageName()));
+                    imgC4.setImageResource(getResources().getIdentifier("cube" + rndCube2, "drawable", getActivity().getPackageName()));
+                    imgC3.setVisibility(View.VISIBLE);
+                    imgC4.setVisibility(View.VISIBLE);
+                }
             }
         }
 
@@ -150,8 +152,7 @@ public class Game extends Fragment implements View.OnClickListener {
                                     layouts[targetIndex].setBackgroundColor(Color.GREEN);
                                 } else {
                                     img2 = (ImageView) child;
-                                    if (img1.getDrawable() != null && img2.getDrawable() != null &&
-                                            img1.getDrawable().getConstantState() == img2.getDrawable().getConstantState()) {
+                                    if (img1.getDrawable() != null && img2.getDrawable() != null && img1.getDrawable().getConstantState() == img2.getDrawable().getConstantState()) {
                                         layouts[targetIndex].setBackgroundColor(Color.GREEN);
                                     } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
                                         layouts[targetIndex].setBackgroundColor(Color.GREEN);
@@ -214,8 +215,9 @@ public class Game extends Fragment implements View.OnClickListener {
                             break;
                         }
                     }
-
+                    boolean ifMove = false;
                     //move
+                    if (!ifMove) {
                         if (selectedLayout.getChildAt(0) != null && layouts[i].getChildAt(0) != null) {
                             img1 = (ImageView) selectedLayout.getChildAt(0);
                             img2 = (ImageView) layouts[i].getChildAt(0);
@@ -228,7 +230,44 @@ public class Game extends Fragment implements View.OnClickListener {
                                 layouts[i].addView(movingImgEat2);
                                 layouts[i].setBackgroundColor(Color.TRANSPARENT);
                             }
+                            else{
+                                ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
+                                selectedLayout.removeViewAt(0);
+                                layouts[i].addView(movingImg);
+                                layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                            }
+                            if (imgC3.getVisibility() == View.VISIBLE) {
+                                if (imgC4.getVisibility() == View.VISIBLE)
+                                    imgC4.setVisibility(View.INVISIBLE);
+                                else
+                                    imgC3.setVisibility(View.INVISIBLE);
+                            } else {
+                                if (turn.equals(whiteTurn)) {
+                                    if (selectedIndex - i == rndCube1) {
+                                        rndCube1 = 0;
+                                        imgC1.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        if (selectedIndex - i == rndCube2) {
+                                            rndCube2 = 0;
+                                            imgC2.setVisibility(View.INVISIBLE);
+                                        }
+                                    }
+                                } else {
+                                    if (i - selectedIndex == rndCube1) {
+                                        rndCube1 = 0;
+                                        imgC1.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        if (i - selectedIndex == rndCube2) {
+                                            rndCube2 = 0;
+                                            imgC2.setVisibility(View.INVISIBLE);
+                                        }
+                                    }
+                                }
+                            }
+                            ifMove = true;
                         }
+                    }
+                    if (!ifMove) {
                         ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
                         selectedLayout.removeViewAt(0);
                         layouts[i].addView(movingImg);
@@ -261,7 +300,9 @@ public class Game extends Fragment implements View.OnClickListener {
                                 }
                             }
                         }
-                    break;
+                        ifMove = true;
+                        break;
+                    }
                 }
             }
 
