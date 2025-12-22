@@ -187,9 +187,15 @@ public class Game extends Fragment implements View.OnClickListener {
                                     if (img1.getDrawable() != null && img3.getDrawable() != null &&
                                             img1.getDrawable().getConstantState() == img3.getDrawable().getConstantState()) {
                                         layouts[targetIndex2].setBackgroundColor(Color.GREEN);
-                                    } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex2].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
+                                    } else if (img1.getDrawable() != null && img3.getDrawable() != null && layouts[targetIndex2].getChildCount() == 1 && img1.getDrawable().getConstantState() != img3.getDrawable().getConstantState()) {
                                         layouts[targetIndex2].setBackgroundColor(Color.GREEN);
                                         eat = true;
+
+
+
+
+
+
                                     } else {
                                         layouts[targetIndex2].setBackgroundColor(Color.RED);
                                         selectedLayout2 = null;
