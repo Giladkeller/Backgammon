@@ -145,7 +145,7 @@ public class Game extends Fragment implements View.OnClickListener {
                     selectedLayout1.setBackgroundColor(Color.RED);
                     selectedLayout1 = null;
                     selectedLayout2 = layouts[i + rndCube2];
-                } else if (i + rndCube2 >= 0) {
+                } else if (i + rndCube2 >= 24) {
                     Toast.makeText(getContext(), "you can move only step by cube 1", Toast.LENGTH_SHORT).show();
                     selectedLayout2.setBackgroundColor(Color.RED);
                     selectedLayout1 = layouts[i + rndCube1];
