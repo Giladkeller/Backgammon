@@ -105,12 +105,21 @@ public class Game extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void moveToYourOtherSoliders(LinearLayout[] layouts, int i, String turn) {
+    private void moveToYourOtherSoliders(LinearLayout[] layouts, int i, String turn, LinearLayout iLEat) {
         for (int j = 0; j < 24; j++) {
             layouts[j].setBackgroundColor(Color.TRANSPARENT);
         }
         LinearLayout selectedLayout1 = layouts[i];
         LinearLayout selectedLayout2 = layouts[i];
+//        Boolean eat = false;
+//        for (int j = 0; iLEat.getChildAt(j) != null; j++) {
+//            int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+//            ImageView imgEat = (ImageView) iLEat.getChildAt(j);
+//            if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+//                eat = true;
+//            }
+//        }
+//        if (!eat) {
         ImageView imChild = (ImageView) layouts[i].getChildAt(0);
         int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
         if (imChild.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
@@ -162,13 +171,15 @@ public class Game extends Fragment implements View.OnClickListener {
 
             if (selectedLayout1 != null) {
                 if (selectedLayout1.getChildAt(0) == null) {
-                    selectedLayout1.setBackgroundColor(Color.GREEN);
+                    selectedLayout1.setBackgroundColor(Colors.GREEN.get());
                 } else {
                     ImageView imgSelect = (ImageView) (selectedLayout1.getChildAt(0));
                     ImageView imgTap = (ImageView) (layouts[i].getChildAt(0));
                     if (imgSelect != null && imgTap != null) {
                         if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
-                            selectedLayout1.setBackgroundColor(Color.GREEN);
+                            selectedLayout1.setBackgroundColor(Colors.GREEN.get());
+                        } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout1.getChildCount() == 1) {
+                            selectedLayout1.setBackgroundColor(Colors.GREEN.get());
                         } else {
                             selectedLayout1.setBackgroundColor(Color.RED);
                         }
@@ -179,13 +190,15 @@ public class Game extends Fragment implements View.OnClickListener {
 
             if (selectedLayout2 != null) {
                 if (selectedLayout2.getChildAt(0) == null) {
-                    selectedLayout2.setBackgroundColor(Color.GREEN);
+                    selectedLayout2.setBackgroundColor(Colors.GREEN.get());
                 } else {
                     ImageView imgSelect = (ImageView) (selectedLayout2.getChildAt(0));
                     ImageView imgTap = (ImageView) (layouts[i].getChildAt(0));
                     if (imgSelect != null && imgTap != null) {
                         if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
-                            selectedLayout2.setBackgroundColor(Color.GREEN);
+                            selectedLayout2.setBackgroundColor(Colors.GREEN.get());
+                        } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout2.getChildCount() == 1) {
+                            selectedLayout2.setBackgroundColor(Colors.GREEN.get());
                         } else {
                             selectedLayout2.setBackgroundColor(Color.RED);
                         }
@@ -196,18 +209,110 @@ public class Game extends Fragment implements View.OnClickListener {
         } else {
             Toast.makeText(getContext(), "it's not your turn", Toast.LENGTH_SHORT).show();
         }
+//        } else {
+//            int place1, place2;
+//            if (turn.equals("white")) {
+//                place1 = 24 - rndCube1;
+//                place2 = 24 - rndCube2;
+//            } else {
+//                place1 = rndCube1 - 1;
+//                place2 = rndCube2 - 1;
+//            }
+//                selectedLayout1 = layouts[place1];
+//                if (selectedLayout1.getChildAt(0) == null) {
+//                    selectedLayout1.setBackgroundColor(Colors.GREEN.get());
+//                } else {
+//                    ImageView imgSelect = (ImageView) (selectedLayout1.getChildAt(0));
+//                    ImageView imgTap = (ImageView) (iLEat.getChildAt(0));
+//                    if (imgSelect != null && imgTap != null) {
+//                        if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
+//                            selectedLayout1.setBackgroundColor(Colors.GREEN.get());
+//                        } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout1.getChildCount() == 1) {
+//                            selectedLayout1.setBackgroundColor(Colors.GREEN.get());
+//                        } else {
+//                            selectedLayout1.setBackgroundColor(Color.RED);
+//                        }
+//                    }
+//                }
+//                selectedLayout2 = layouts[place2];
+//                if (selectedLayout2.getChildAt(0) == null) {
+//                    selectedLayout2.setBackgroundColor(Colors.GREEN.get());
+//                } else {
+//                    ImageView imgSelect = (ImageView) (selectedLayout2.getChildAt(0));
+//                    ImageView imgTap = (ImageView) (iLEat.getChildAt(0));
+//                    if (imgSelect != null && imgTap != null) {
+//                        if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
+//                            selectedLayout2.setBackgroundColor(Colors.GREEN.get());
+//                        } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout2.getChildCount() == 1) {
+//                            selectedLayout2.setBackgroundColor(Colors.GREEN.get());
+//                        } else {
+//                            selectedLayout2.setBackgroundColor(Color.RED);
+//                        }
+//                    }
+//                }
+//            }
     }
 
-    private void move(LinearLayout[] layouts, int i, LinearLayout selectedLayout, String turn) {
+    private void ifEat(LinearLayout[] layouts, LinearLayout iLEat, String turn) {
+        for (int j = 0; j < 24; j++) {
+            layouts[j].setBackgroundColor(Color.TRANSPARENT);
+        }
+        int place1, place2;
+        if (turn.equals("white")) {
+            place1 = 24 - rndCube1;
+            place2 = 24 - rndCube2;
+        } else {
+            place1 = rndCube1 - 1;
+            place2 = rndCube2 - 1;
+        }
+
+        if (layouts[place1].getChildAt(0) == null) {
+            layouts[place1].setBackgroundColor(Colors.GREEN.get());
+        } else {
+            ImageView imgSelect = (ImageView) (layouts[place1].getChildAt(0));
+            ImageView imgTap = (ImageView) (iLEat.getChildAt(0));
+            if (imgSelect != null && imgTap != null) {
+                if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
+                    layouts[place1].setBackgroundColor(Colors.GREEN.get());
+                } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout1.getChildCount() == 1) {
+                    layouts[place1].setBackgroundColor(Colors.GREEN.get());
+                } else {
+                    layouts[place1].setBackgroundColor(Color.RED);
+                }
+            }
+        }
+
+        if (layouts[place2].getChildAt(0) == null) {
+            layouts[place2].setBackgroundColor(Colors.GREEN.get());
+        } else {
+            ImageView imgSelect = (ImageView) (layouts[place2].getChildAt(0));
+            ImageView imgTap = (ImageView) (iLEat.getChildAt(0));
+            if (imgSelect != null && imgTap != null) {
+                if (imgSelect.getDrawable().getConstantState() == imgTap.getDrawable().getConstantState()) {
+                    layouts[place2].setBackgroundColor(Colors.GREEN.get());
+                } else if (imgSelect.getDrawable().getConstantState() != imgTap.getDrawable().getConstantState() && selectedLayout2.getChildCount() == 1) {
+                    layouts[place2].setBackgroundColor(Colors.GREEN.get());
+                } else {
+                    layouts[place2].setBackgroundColor(Color.RED);
+                }
+            }
+        }
+    }
+
+
+    private void move(LinearLayout[] layouts, int i, LinearLayout selectedLayout, String turn, boolean eat) {
         ImageView imgMove, imgSelected;
         int selectedIndex = -1;
+        if (eat){
+           //לכתוב קוד להורדת קוביות אם אוכלים selectedIndex =
+        }
         for (int j = 0; j < 24; j++) {
             if (selectedLayout == layouts[j]) {
                 selectedIndex = j;
             }
         }
         LinearLayout moveLayout = layouts[i];
-        if (moveLayout.getBackground() != null && ((ColorDrawable) layouts[i].getBackground()).getColor() == Color.GREEN) {
+        if (moveLayout.getBackground() != null && ((ColorDrawable) layouts[i].getBackground()).getColor() == Colors.GREEN.get()) {
             if (moveLayout.getChildAt(0) == null) {
                 ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
                 selectedLayout.removeViewAt(0);
@@ -218,6 +323,14 @@ public class Game extends Fragment implements View.OnClickListener {
                 imgSelected = (ImageView) selectedLayout.getChildAt(0);
                 if (imgMove != null && imgSelected != null) {
                     if (imgMove.getDrawable().getConstantState() == imgSelected.getDrawable().getConstantState()) {
+                        ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
+                        selectedLayout.removeViewAt(0);
+                        moveLayout.addView(movingImg);
+                        moveLayout.setBackgroundColor(Color.TRANSPARENT);
+                    } else if (imgMove.getDrawable().getConstantState() != imgSelected.getDrawable().getConstantState() && moveLayout.getChildCount() == 1) {
+                        ImageView eatMovingIMg = (ImageView) moveLayout.getChildAt(0);
+                        moveLayout.removeViewAt(0);
+                        iLEat.addView(eatMovingIMg);
                         ImageView movingImg = (ImageView) selectedLayout.getChildAt(0);
                         selectedLayout.removeViewAt(0);
                         moveLayout.addView(movingImg);
@@ -261,51 +374,68 @@ public class Game extends Fragment implements View.OnClickListener {
         }
     }
 
-        ImageView img1;
-        ImageView img2;
-        ImageView img3;
-        LinearLayout selectedLayout1 = null, selectedLayout2 = null;
+    ImageView img1;
+    ImageView img2;
+    ImageView img3;
+    LinearLayout selectedLayout1 = null, selectedLayout2 = null;
 
-        LinearLayout selectedLayout = null;
+    LinearLayout selectedLayout = null;
 
-        String whiteTurn = "white";
-        String brownTurn = "brown";
-        String turn = "white";
+    String whiteTurn = "white";
+    String brownTurn = "brown";
+    String turn = "white";
 
-        @Override
-        public void onClick (View view){
-            //throw cubes
-            if (imgCubes.getId() == view.getId()) {
-                throwCubes();
-            }
+    @Override
+    public void onClick(View view) {
+        //throw cubes
+        if (imgCubes.getId() == view.getId()) {
+            throwCubes();
+        }
 
-            boolean eat = false;
-            if (selectedLayout == null) {
-                for (int i = 0; i < 24; i++) {
+        boolean eat = false;
+        if (selectedLayout == null) {
+            for (int i = 0; i < 24; i++) {
+                for (int j = 0; iLEat.getChildAt(j) != null; j++) {
+                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+                    ImageView imgEat = (ImageView) iLEat.getChildAt(j);
+                    if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                        eat = true;
+                    }
+                }
+                if (view.getId() == iLEat.getId()) {
                     if (view.getId() == layouts[i].getId()) {
-                        if (layouts[i].getChildAt(0) != null) {
-                            moveToYourOtherSoliders(layouts, i, turn);
-                            selectedLayout = layouts[i];
-                        }
+                        Toast.makeText(getContext(), "you have solider in the eat linear", Toast.LENGTH_SHORT).show();
+                    }
+                    ifEat(layouts, iLEat, turn);
+                    selectedLayout = iLEat;
+                }
+                if (view.getId() == layouts[i].getId() && !eat) {
+                    if (layouts[i].getChildAt(0) != null) {
+                        moveToYourOtherSoliders(layouts, i, turn, iLEat);
+                        selectedLayout = layouts[i];
                     }
                 }
-            } else {
-                for (int j = 0; j < 24; j++) {
-                    if (view.getId() == layouts[j].getId()) {
-                        move(layouts, j, selectedLayout, turn);
-                    }
-                }
-                selectedLayout = null;
             }
+        } else {
+            for (int j = 0; j < 24; j++) {
+                if (view.getId() == iLEat.getId()) {
+                    move(layouts, j, selectedLayout, turn, eat);
+                }
+                if (view.getId() == layouts[j].getId() && !eat) {
+                    move(layouts, j, selectedLayout, turn, eat);
+                }
+            }
+            selectedLayout = null;
+        }
 
-            if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE) {
-                if (turn.equals("white")) {
-                    turn = "brown";
-                } else {
-                    turn = "white";
-                }
+        if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE) {
+            if (turn.equals("white")) {
+                turn = "brown";
+            } else {
+                turn = "white";
             }
-            //   }
+        }
+        //   }
 
 //                    ImageView imChild = (ImageView) layouts[i].getChildAt(0);
 //                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
@@ -334,13 +464,13 @@ public class Game extends Fragment implements View.OnClickListener {
 //                                img1 = (ImageView) layouts[i].getChildAt(0);
 //                                View child = layouts[targetIndex].getChildAt(0);
 //                                if (child == null) {
-//                                    layouts[targetIndex].setBackgroundColor(Color.GREEN);
+//                                    layouts[targetIndex].setBackgroundColor(Colors.GREEN.get());
 //                                } else {
 //                                    img2 = (ImageView) child;
 //                                    if (img1.getDrawable() != null && img2.getDrawable() != null && img1.getDrawable().getConstantState() == img2.getDrawable().getConstantState()) {
-//                                        layouts[targetIndex].setBackgroundColor(Color.GREEN);
+//                                        layouts[targetIndex].setBackgroundColor(Colors.GREEN.get());
 //                                    } else if (img1.getDrawable() != null && img2.getDrawable() != null && layouts[targetIndex].getChildCount() == 1 && img1.getDrawable().getConstantState() != img2.getDrawable().getConstantState()) {
-//                                        layouts[targetIndex].setBackgroundColor(Color.GREEN);
+//                                        layouts[targetIndex].setBackgroundColor(Colors.GREEN.get());
 //                                    } else {
 //                                        layouts[targetIndex].setBackgroundColor(Color.RED);
 //                                        selectedLayout = null;
@@ -366,14 +496,14 @@ public class Game extends Fragment implements View.OnClickListener {
 //                                img1 = (ImageView) layouts[i].getChildAt(0);
 //                                View child2 = layouts[targetIndex2].getChildAt(0);
 //                                if (child2 == null) {
-//                                    layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+//                                    layouts[targetIndex2].setBackgroundColor(Colors.GREEN.get());
 //                                } else {
 //                                    img3 = (ImageView) child2;
 //                                    if (img1.getDrawable() != null && img3.getDrawable() != null &&
 //                                            img1.getDrawable().getConstantState() == img3.getDrawable().getConstantState()) {
-//                                        layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+//                                        layouts[targetIndex2].setBackgroundColor(Colors.GREEN.get());
 //                                    } else if (img1.getDrawable() != null && img3.getDrawable() != null && layouts[targetIndex2].getChildCount() == 1 && img1.getDrawable().getConstantState() != img3.getDrawable().getConstantState()) {
-//                                        layouts[targetIndex2].setBackgroundColor(Color.GREEN);
+//                                        layouts[targetIndex2].setBackgroundColor(Colors.GREEN.get());
 //                                        eat = true;
 //
 //
@@ -393,7 +523,7 @@ public class Game extends Fragment implements View.OnClickListener {
 //        //if tap on one linear
 //        else {
 //            for (int i = 0; i < 24; i++) {
-//                if (layouts[i].getBackground() != null && ((ColorDrawable) layouts[i].getBackground()).getColor() == Color.GREEN && view.getId() == layouts[i].getId()) {
+//                if (layouts[i].getBackground() != null && ((ColorDrawable) layouts[i].getBackground()).getColor() == Colors.GREEN.get() && view.getId() == layouts[i].getId()) {
 //
 //                    int selectedIndex = -1;
 //                    for (int h = 0; h < layouts.length; h++) {
@@ -507,8 +637,23 @@ public class Game extends Fragment implements View.OnClickListener {
 //                turn = whiteTurn;
 //            }
 //        }
-        }
-
     }
+
+    public enum Colors {
+        GREEN,
+        RED;
+
+        public int get() {
+            switch (this) {
+                case GREEN:
+                    return Color.parseColor("#675be851");
+                case RED:
+                    return Color.RED;
+            }
+            return 0;
+        }
+    }
+
+}
 
 
