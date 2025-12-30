@@ -252,7 +252,6 @@ public class Game extends Fragment implements View.OnClickListener {
 //                }
 //            }
     }
-
     private void ifEat(LinearLayout[] layouts, LinearLayout iLEat, String turn) {
         boolean eat = false;
         for (int j = 0; j < 24; j++) {
