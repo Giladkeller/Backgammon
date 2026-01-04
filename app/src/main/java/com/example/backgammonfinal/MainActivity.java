@@ -175,8 +175,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvDMessage.setVisibility(View.VISIBLE);
                 if (isRegistered) {
                     tvDMessage.setText("Registration successful");
-                    dialog.dismiss();
-                    createLoginDialog();
+//                    dialog.dismiss();
+//                    createLoginDialog();
+                    SharedPreferences sharedPreferences =
+                            getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("USERNAME", username);  // 'username' is avariable holding the user's name
+                    editor.apply(); // or editor.commit();
+                    intent = new Intent(MainActivity.this, users.class);
+                    intent.putExtra("USERNAME", username);
+                    startActivity(intent);
 // Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Registration failed user/main exist");
