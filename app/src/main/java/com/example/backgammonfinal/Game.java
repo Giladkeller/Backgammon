@@ -201,7 +201,7 @@ public class Game extends Fragment implements View.OnClickListener {
             int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
             if (imChild.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
                 if (turn.equals("white")) {
-                    if (!(i - rndCube1 < 0) && rndCube1 != 0) {
+                    if ((i - rndCube1 > 0) && rndCube1 != 0) {
                         if (layouts[i - rndCube1].getChildAt(0) != null) {
                             ImageView imgSelect1 = (ImageView) (layouts[i - rndCube1].getChildAt(0));
                             if (imChild.getDrawable().getConstantState() != imgSelect1.getDrawable().getConstantState() && layouts[i - rndCube1].getChildCount() == 1) {
@@ -210,7 +210,7 @@ public class Game extends Fragment implements View.OnClickListener {
                             }
                         }
                     }
-                    if (!(i - rndCube2 < 0) && rndCube2 != 0) {
+                    if ((i - rndCube2 > 0) && rndCube2 != 0) {
                         if (layouts[i - rndCube2].getChildAt(0) != null) {
                             ImageView imgSelect2 = (ImageView) (layouts[i - rndCube2].getChildAt(0));
                             if (imChild.getDrawable().getConstantState() != imgSelect2.getDrawable().getConstantState() && layouts[i - rndCube2].getChildCount() == 1) {
@@ -221,7 +221,7 @@ public class Game extends Fragment implements View.OnClickListener {
                     }
                 }
                 if (turn.equals("brown")) {
-                    if (!(i + rndCube1 >= 24) && rndCube1 != 0) {
+                    if ((i + rndCube1 < 24) && rndCube1 != 0) {
                         if (layouts[i + rndCube1].getChildAt(0) != null) {
                             ImageView imgSelect1 = (ImageView) (layouts[i + rndCube1].getChildAt(0));
                             if (imChild.getDrawable().getConstantState() != imgSelect1.getDrawable().getConstantState() && layouts[i + rndCube1].getChildCount() == 1) {
@@ -230,7 +230,7 @@ public class Game extends Fragment implements View.OnClickListener {
                             }
                         }
                     }
-                    if (!(i + rndCube2 >= 24) && rndCube2 != 0) {
+                    if ((i + rndCube2 < 24) && rndCube2 != 0) {
                         if (layouts[i + rndCube2].getChildAt(0) != null) {
                             ImageView imgSelect2 = (ImageView) (layouts[i + rndCube2].getChildAt(0));
                             if (imChild.getDrawable().getConstantState() != imgSelect2.getDrawable().getConstantState() && layouts[i + rndCube2].getChildCount() == 1) {
@@ -246,57 +246,196 @@ public class Game extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void eatMove(String turn, boolean[] eatMove) {
-        if (turn.equals("white")){
-            if (rndCube1 != 0){
-                layouts[24 - rndCube1].setBackgroundColor(Colors.GREEN.get());
-                canMove[24 - rndCube1] = true;
+    private void checkEatTarget(int index, String turn) {
+        if (index < 0 || index >= 24) return;
+
+        int resId = getResources().getIdentifier(turn + "_solider", "drawable", requireContext().getPackageName());
+
+        if (layouts[index].getChildAt(0) == null) {
+            layouts[index].setBackgroundColor(Colors.GREEN.get());
+            canMove[index] = true;
+            return;
+        }
+
+        ImageView img = (ImageView) layouts[index].getChildAt(0);
+
+        if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+            layouts[index].setBackgroundColor(Colors.GREEN.get());
+            canMove[index] = true;
+        } else if (layouts[index].getChildCount() == 1) {
+            layouts[index].setBackgroundColor(Colors.GREEN.get());
+            canMove[index] = true;
+        }
+    }
+
+    private int getEnterIndex(int cube, String turn) {
+        if (turn.equals("white")) {
+            return 24 - cube;
+        } else {
+            return cube - 1;
+        }
+    }
+
+
+//    private void eatMove(String turn, boolean[] eatMove, LinearLayout[] layouts, int selected) {
+//        if (turn.equals("white")) {
+//            if (rndCube1 != 0) {
+//                layouts[24 - rndCube1].setBackgroundColor(Colors.GREEN.get());
+//                canMove[24 - rndCube1] = true;
+//            }
+//            if (rndCube2 != 0) {
+//                layouts[24 - rndCube2].setBackgroundColor(Colors.GREEN.get());
+//                canMove[24 - rndCube2] = true;
+//            }
+//        }
+//        if (turn.equals("brown")) {
+//            if (rndCube1 != 0) {
+//                layouts[rndCube1 + 1].setBackgroundColor(Colors.GREEN.get());
+//                canMove[rndCube1 + 1] = true;
+//            }
+//            if (rndCube2 != 0) {
+//                layouts[rndCube2 + 1].setBackgroundColor(Colors.GREEN.get());
+//                canMove[rndCube2 + 1] = true;
+//            }
+//        }
+//    }
+
+
+    private int selectLinear(int rndCube, int i, String turn) {
+        int selected = i;
+        if (i == 0) {
+            if (turn.equals("white")) {
+                selected = 24 - rndCube;
+            } else if (turn.equals("brown")) {
+                selected = rndCube - 1;
             }
-            if (rndCube2 != 0){
-                layouts[24 - rndCube2].setBackgroundColor(Colors.GREEN.get());
-                canMove[24 - rndCube2] = true;
+        } else {
+            if (turn.equals("white")) {
+                selected = i - rndCube;
+            } else if (turn.equals("brown")) {
+                selected = i + rndCube;
             }
         }
-        if (turn.equals("brown")){
-            if (rndCube1 != 0){
-                layouts[rndCube1 + 1].setBackgroundColor(Colors.GREEN.get());
-                canMove[rndCube1 + 1] = true;
+        return selected;
+    }
+
+    private void paintLinear(int selected, LinearLayout[] layouts, int i, boolean[] canMove, LinearLayout iLEat, String turn) {
+        if (selected < 24 && selected >= 0) {
+            if (layouts[selected].getChildAt(0) != null && layouts[i].getChildAt(0) != null) {
+                ImageView imageSelected = (ImageView) (layouts[selected].getChildAt(0));
+                ImageView imageI = (ImageView) (layouts[i].getChildAt(0));
+                if (imageI.getDrawable().getConstantState() == imageSelected.getDrawable().getConstantState()) {
+                    layouts[selected].setBackgroundColor(Colors.GREEN.get());
+                    canMove[selected] = true;
+                } else if (layouts[selected].getChildCount() == 1) {
+                    layouts[selected].setBackgroundColor(Colors.GREEN.get());
+                    canMove[selected] = true;
+                } else {
+                    layouts[selected].setBackgroundColor(Colors.RED.get());
+                }
+            } else if (layouts[selected].getChildAt(0) == null) {
+                layouts[selected].setBackgroundColor(Colors.GREEN.get());
+                canMove[selected] = true;
+            } else {
+                layouts[selected].setBackgroundColor(Colors.RED.get());
             }
-            if (rndCube2 != 0){
-                layouts[rndCube2 + 1].setBackgroundColor(Colors.GREEN.get());
-                canMove[rndCube2 + 1] = true;
+        } else if (selected == -1) {
+            if (layouts[i].getChildAt(0) != null){
+
             }
         }
     }
 
-    private void deleteCube(int selected, int j, String turn) {
-        if (turn.equals("white")) {
-            if (selected - j == rndCube1) {
-                if (imgC4.getVisibility() == View.VISIBLE) {
-                    imgC4.setVisibility(View.INVISIBLE);
-                } else if (imgC3.getVisibility() == View.VISIBLE) {
-                    imgC3.setVisibility(View.INVISIBLE);
+    private void moveGreen(LinearLayout[] layouts, int i, boolean[] canMove, int selected, LinearLayout iLEat) {
+        if (canMove[i]) {
+            if (layouts[i].getChildAt(0) != null && layouts[selected].getChildAt(0) != null) {
+                ImageView imageSelected = (ImageView) (layouts[selected].getChildAt(0));
+                ImageView imageMove = (ImageView) (layouts[i].getChildAt(0));
+                if (imageMove.getDrawable().getConstantState() == imageSelected.getDrawable().getConstantState()) {
+                    layouts[selected].removeViewAt(0);
+                    layouts[i].addView(imageSelected);
+                    layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                    deleteCube(selected, i, turn);
                 } else {
-                    imgC1.setVisibility(View.INVISIBLE);
-                    rndCube1 = 0;
+                    layouts[selected].removeViewAt(0);
+                    layouts[i].removeViewAt(0);
+                    layouts[i].addView(imageSelected);
+                    iLEat.addView(imageMove);
+                    layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                    deleteCube(selected, i, turn);
                 }
-            } else if (selected - j == rndCube2) {
-                imgC2.setVisibility(View.INVISIBLE);
-                rndCube2 = 0;
+            } else if (layouts[selected].getChildAt(0) != null) {
+                ImageView imageSelected = (ImageView) (layouts[selected].getChildAt(0));
+                layouts[selected].removeViewAt(0);
+                layouts[i].addView(imageSelected);
+                layouts[i].setBackgroundColor(Color.TRANSPARENT);
+                deleteCube(selected, i, turn);
             }
-        } else if (turn.equals("brown")) {
-            if (j - selected == rndCube1) {
-                if (imgC4.getVisibility() == View.VISIBLE) {
-                    imgC4.setVisibility(View.INVISIBLE);
-                } else if (imgC3.getVisibility() == View.VISIBLE) {
-                    imgC3.setVisibility(View.INVISIBLE);
-                } else {
-                    imgC1.setVisibility(View.INVISIBLE);
-                    rndCube1 = 0;
+        } else {
+            Toast.makeText(getContext(), "you can't move to here", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteCube(int selected, int j, String turn) {
+        if (selected == 0) {
+            if (turn.equals("white")) {
+                if (24 - j == rndCube1) {
+                    if (imgC4.getVisibility() == View.VISIBLE) {
+                        imgC4.setVisibility(View.INVISIBLE);
+                    } else if (imgC3.getVisibility() == View.VISIBLE) {
+                        imgC3.setVisibility(View.INVISIBLE);
+                    } else {
+                        imgC1.setVisibility(View.INVISIBLE);
+                        rndCube1 = 0;
+                    }
+                } else if (24 - j == rndCube2) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
                 }
-            } else if (j - selected == rndCube2) {
-                imgC2.setVisibility(View.INVISIBLE);
-                rndCube2 = 0;
+            } else if (turn.equals("brown")) {
+                if (j + 1 == rndCube1) {
+                    if (imgC4.getVisibility() == View.VISIBLE) {
+                        imgC4.setVisibility(View.INVISIBLE);
+                    } else if (imgC3.getVisibility() == View.VISIBLE) {
+                        imgC3.setVisibility(View.INVISIBLE);
+                    } else {
+                        imgC1.setVisibility(View.INVISIBLE);
+                        rndCube1 = 0;
+                    }
+                } else if (j + 1 == rndCube2) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
+            }
+        } else {
+            if (turn.equals("white")) {
+                if (selected - j == rndCube1) {
+                    if (imgC4.getVisibility() == View.VISIBLE) {
+                        imgC4.setVisibility(View.INVISIBLE);
+                    } else if (imgC3.getVisibility() == View.VISIBLE) {
+                        imgC3.setVisibility(View.INVISIBLE);
+                    } else {
+                        imgC1.setVisibility(View.INVISIBLE);
+                        rndCube1 = 0;
+                    }
+                } else if (selected - j == rndCube2) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
+            } else if (turn.equals("brown")) {
+                if (j - selected == rndCube1) {
+                    if (imgC4.getVisibility() == View.VISIBLE) {
+                        imgC4.setVisibility(View.INVISIBLE);
+                    } else if (imgC3.getVisibility() == View.VISIBLE) {
+                        imgC3.setVisibility(View.INVISIBLE);
+                    } else {
+                        imgC1.setVisibility(View.INVISIBLE);
+                        rndCube1 = 0;
+                    }
+                } else if (j - selected == rndCube2) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
             }
         }
     }
@@ -331,74 +470,144 @@ public class Game extends Fragment implements View.OnClickListener {
             layouts[i].setBackgroundColor(Color.TRANSPARENT);
         }
 
-
-        for (int e = 0; e < iLEat.getChildCount() - 1; e++) {
-            ImageView imgColorEat = (ImageView) (iLEat.getChildAt(e));
-            int resIdEAt = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
-            if (imgColorEat != null && imgColorEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resIdEAt).getConstantState() && selected != -1) {
-                Toast.makeText(getContext(), "you have eat solider", Toast.LENGTH_SHORT).show();
-                if (iLEat.getId() == view.getId()){
-                    eatMove(turn, canMove);
+        for (int i = 0; i < 24; i++) {
+            if (rndCube1 != 0 || rndCube2 != 0){
+                for (int j = 0; j < iLEat.getChildCount(); j++) {
+                    ImageView imgColorEat = (ImageView) (iLEat.getChildAt(j));
+                    int resIdEAt = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+                    if (imgColorEat != null && imgColorEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resIdEAt).getConstantState()) {
+                        for (int k = 0; k < 24; k++) {
+                            layouts[k].setClickable(false);
+                        }
+                        if (iLEat.getId() == view.getId()){
+                            paintLinear(-1,layouts,selectLinear(rndCube1,0,turn),canMove,iLEat,turn);
+                            paintLinear(-1,layouts,selectLinear(rndCube2,0,turn),canMove,iLEat,turn);
+                        }
+                    }
                 }
-            } else {
-                for (int i = 0; i < 24; i++) {
-                    if (layouts[i].getId() == view.getId()) {
-                        ImageView imgColor = (ImageView) (layouts[i].getChildAt(0));
-                        int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
-                        if (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-                            clear(layouts, i, turn, canMove);
-                            yourSoliders(layouts, i, turn, canMove);
-                            eatAnother(layouts, i, turn, canMove);
-                            for (int j = 0; j < 24; j++) {
-                                if (canMove[j])
-                                    selected = i;
-                            }
-                            break;
-                        }
-                    }
-
-
-                    for (int j = 0; j < 24; j++) {
-                        ImageView imgColor = (ImageView) (layouts[j].getChildAt(0));
-                        int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
-                        if ((imgColor == null) || (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState())) {
-                            if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
-                                ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
-                                layouts[selected].removeViewAt(0);
-                                layouts[j].addView(imgMove);
-                                for (int K = 0; K < 24; K++) {
-                                    layouts[K].setBackgroundColor(Color.TRANSPARENT);
-                                }
-                                deleteCube(selected, j, turn);
-                                selected = -1;
-                                for (int h = 0; h < 24; h++) {
-                                    canMove[h] = false;
-                                }
-                                //   return;
-                            }
-                        } else if (imgColor != null && imgColor.getDrawable().getConstantState() != ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-                            if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
-                                ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
-                                ImageView imageEat = (ImageView) (layouts[j]).getChildAt(0);
-                                layouts[j].removeViewAt(0);
-                                iLEat.addView(imageEat);
-                                layouts[selected].removeViewAt(0);
-                                layouts[j].addView(imgMove);
-                                for (int K = 0; K < 24; K++) {
-                                    layouts[i].setBackgroundColor(Color.TRANSPARENT);
-                                }
-                                deleteCube(selected, j, turn);
-                                selected = -1;
-                                for (int h = 0; h < 24; h++) {
-                                    canMove[h] = false;
-                                }
-                                return;
-                            }
-                        }
-                    }
+                if (layouts[i].getId() == view.getId()){
+                    paintLinear(i,layouts,selectLinear(rndCube1,i,turn),canMove,iLEat,turn);
+                    paintLinear(i,layouts,selectLinear(rndCube2,i,turn),canMove,iLEat,turn);
                 }
             }
         }
+
+//        boolean eat = false;
+//        for (int e = 0; e < iLEat.getChildCount(); e++) {
+//            ImageView imgColorEat = (ImageView) (iLEat.getChildAt(e));
+//            int resIdEAt = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+//            if (imgColorEat != null && imgColorEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resIdEAt).getConstantState() && selected != -1) {
+//                Toast.makeText(getContext(), "you have eat solider", Toast.LENGTH_SHORT).show();
+//                eat = true;
+//                if (iLEat.getId() == view.getId()) {
+//                    selected = 0;
+//                    if (rndCube1 != 0) {
+//                        int idx = getEnterIndex(rndCube1, turn);
+//                        checkEatTarget(idx, turn);
+//                    }
+//                    if (rndCube2 != 0) {
+//                        int idx = getEnterIndex(rndCube2, turn);
+//                        checkEatTarget(idx, turn);
+//                    }
+//                }
+//                for (int j = 0; j < 24; j++) {
+//                    ImageView imgColor = (ImageView) (layouts[j].getChildAt(0));
+//                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+//                    if ((imgColor == null) || (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState())) {
+//                        if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
+//                            ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
+//                            layouts[selected].removeViewAt(0);
+//                            layouts[j].addView(imgMove);
+//                            for (int K = 0; K < 24; K++) {
+//                                layouts[K].setBackgroundColor(Color.TRANSPARENT);
+//                            }
+//                            deleteCube(selected, j, turn);
+//                            selected = -1;
+//                            for (int h = 0; h < 24; h++) {
+//                                canMove[h] = false;
+//                            }
+//                            //   return;
+//                        }
+//                    } else if (imgColor != null && imgColor.getDrawable().getConstantState() != ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+//                        if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
+//                            ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
+//                            ImageView imageEat = (ImageView) (layouts[j]).getChildAt(0);
+//                            layouts[j].removeViewAt(0);
+//                            iLEat.addView(imageEat);
+//                            layouts[selected].removeViewAt(0);
+//                            layouts[j].addView(imgMove);
+//                            for (int K = 0; K < 24; K++) {
+//                                layouts[K].setBackgroundColor(Color.TRANSPARENT);
+//                            }
+//                            deleteCube(selected, j, turn);
+//                            selected = -1;
+//                            for (int h = 0; h < 24; h++) {
+//                                canMove[h] = false;
+//                            }
+//                            return;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        if (!eat) {
+//            for (int i = 0; i < 24; i++) {
+//                if (layouts[i].getId() == view.getId()) {
+//                    ImageView imgColor = (ImageView) (layouts[i].getChildAt(0));
+//                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+//                    if (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+//                        clear(layouts, i, turn, canMove);
+//                        yourSoliders(layouts, i, turn, canMove);
+//                        eatAnother(layouts, i, turn, canMove);
+//                        for (int j = 0; j < 24; j++) {
+//                            if (canMove[j])
+//                                selected = i;
+//                        }
+//                        break;
+//                    }
+//                }
+//
+//
+//                for (int j = 0; j < 24; j++) {
+//                    ImageView imgColor = (ImageView) (layouts[j].getChildAt(0));
+//                    int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+//                    if ((imgColor == null) || (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState())) {
+//                        if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
+//                            ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
+//                            layouts[selected].removeViewAt(0);
+//                            layouts[j].addView(imgMove);
+//                            for (int K = 0; K < 24; K++) {
+//                                layouts[K].setBackgroundColor(Color.TRANSPARENT);
+//                            }
+//                            deleteCube(selected, j, turn);
+//                            selected = -1;
+//                            for (int h = 0; h < 24; h++) {
+//                                canMove[h] = false;
+//                            }
+//                            //   return;
+//                        }
+//                    } else if (imgColor != null && imgColor.getDrawable().getConstantState() != ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+//                        if (selected != -1 && canMove[j] && layouts[selected].getChildAt(0) != null && layouts[j].getId() == view.getId()) {
+//                            ImageView imgMove = (ImageView) (layouts[selected].getChildAt(0));
+//                            ImageView imageEat = (ImageView) (layouts[j]).getChildAt(0);
+//                            layouts[j].removeViewAt(0);
+//                            iLEat.addView(imageEat);
+//                            layouts[selected].removeViewAt(0);
+//                            layouts[j].addView(imgMove);
+//                            for (int K = 0; K < 24; K++) {
+//                                layouts[K].setBackgroundColor(Color.TRANSPARENT);
+//                            }
+//                            deleteCube(selected, j, turn);
+//                            selected = -1;
+//                            for (int h = 0; h < 24; h++) {
+//                                canMove[h] = false;
+//                            }
+//                            return;
+//                        }
+//                    }
+//                }
+//            }
+//    }
 
 
 //        for (int i = 0; i < 24; i++) {
@@ -411,18 +620,22 @@ public class Game extends Fragment implements View.OnClickListener {
 //            }
 //        }
 
-        boolean changeTurn = false;
-        if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE) {
-            if (turn.equals("white")) {
-                turn = "brown";
-                changeTurn = true;
-            }
-            if (turn.equals("brown") && !changeTurn) {
-                turn = "white";
-                changeTurn = true;
-            }
+    boolean changeTurn = false;
+        if(imgC1.getVisibility()==View.INVISIBLE &&imgC2.getVisibility()==View.INVISIBLE)
+
+    {
+        if (turn.equals("white")) {
+            turn = "brown";
+            changeTurn = true;
+        }
+        if (turn.
+
+                equals("brown") && !changeTurn) {
+            turn = "white";
+            changeTurn = true;
         }
     }
+}
 
 
 //    private void moveToYourOtherSoliders(LinearLayout[] layouts, int i, String turn, LinearLayout iLEat) {
@@ -432,15 +645,15 @@ public class Game extends Fragment implements View.OnClickListener {
 //        LinearLayout selectedLayout1 = layouts[i];
 //        LinearLayout selectedLayout2 = layouts[i];
 
-    /// /        Boolean eat = false;
-    /// /        for (int j = 0; iLEat.getChildAt(j) != null; j++) {
-    /// /            int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
-    /// /            ImageView imgEat = (ImageView) iLEat.getChildAt(j);
-    /// /            if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-    /// /                eat = true;
-    /// /            }
-    /// /        }
-    /// /        if (!eat) {
+/// /        Boolean eat = false;
+/// /        for (int j = 0; iLEat.getChildAt(j) != null; j++) {
+/// /            int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+/// /            ImageView imgEat = (ImageView) iLEat.getChildAt(j);
+/// /            if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+/// /                eat = true;
+/// /            }
+/// /        }
+/// /        if (!eat) {
 //        ImageView imChild = (ImageView) layouts[i].getChildAt(0);
 //        int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
 //        if (imChild.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
@@ -1056,20 +1269,20 @@ public class Game extends Fragment implements View.OnClickListener {
 //        }
 //    }
 
-    public enum Colors {
-        GREEN,
-        RED;
+public enum Colors {
+    GREEN,
+    RED;
 
-        public int get() {
-            switch (this) {
-                case GREEN:
-                    return Color.parseColor("#675be851");
-                case RED:
-                    return Color.RED;
-            }
-            return 0;
+    public int get() {
+        switch (this) {
+            case GREEN:
+                return Color.parseColor("#675be851");
+            case RED:
+                return Color.RED;
         }
+        return 0;
     }
+}
 
 }
 
