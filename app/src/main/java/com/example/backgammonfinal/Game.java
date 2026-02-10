@@ -4,7 +4,6 @@ import java.util.Random;
 
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -41,6 +41,8 @@ public class Game extends Fragment implements View.OnClickListener {
     private Random rnd = new Random();
     private int rndCube1, rndCube2;
 
+    private Button restart;
+
     @Nullable
     public View onCreateView() {
         return onCreateView(null, null, null);
@@ -61,9 +63,11 @@ public class Game extends Fragment implements View.OnClickListener {
             int resID = getResources().getIdentifier(layoutID, "id", getActivity().getPackageName());
             layouts[i] = (LinearLayout) v.findViewById(resID);
             layouts[i].setOnClickListener(this);
+            layouts[i].setClickable(false);
         }
         iLEat = (LinearLayout) v.findViewById(R.id.iLEat);
         iLEat.setOnClickListener(this);
+        iLEat.setClickable(false);
 
         imgC1 = (ImageView) v.findViewById(R.id.imgC1);
         imgC2 = (ImageView) v.findViewById(R.id.imgC2);
@@ -75,10 +79,79 @@ public class Game extends Fragment implements View.OnClickListener {
         imgC4.setVisibility(View.INVISIBLE);
         imgCubes = (ImageView) v.findViewById(R.id.imgCubes);
         imgCubes.setOnClickListener(this);
+        restart = (Button) v.findViewById(R.id.btnRestart);
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restartGame();
+            }
+        });
+
+        setupStartingPosition();
 
         return v;
 
     }
+
+    private void restartGame() {
+        // 1. ניקוי כל המשולשים מחיילים
+        for (int i = 0; i < 24; i++) {
+            layouts[i].removeAllViews();
+            layouts[i].setBackgroundColor(Color.TRANSPARENT);
+            layouts[i].setClickable(false); // עד שזורקים קוביות
+        }
+
+        // 2. ניקוי אזור האכולים
+        iLEat.removeAllViews();
+
+        // 3. איפוס משתני המשחק
+        turn = "white";
+        rndCube1 = 0;
+        rndCube2 = 0;
+        selected = -2;
+        eatIndex = -1;
+
+        // 4. הסתרת קוביות
+        imgC1.setVisibility(View.INVISIBLE);
+        imgC2.setVisibility(View.INVISIBLE);
+        imgC3.setVisibility(View.INVISIBLE);
+        imgC4.setVisibility(View.INVISIBLE);
+
+        // 5. הצבת החיילים מחדש (פונקציה שנבנה מיד)
+        setupStartingPosition();
+
+        Toast.makeText(getContext(), "המשחק אותחל! תור לבן", Toast.LENGTH_SHORT).show();
+    }
+
+    private void addSoldier(int layoutIndex, String color, int count) {
+        int resId = getResources().getIdentifier(color + "_solider", "drawable", requireContext().getPackageName());
+
+        for (int i = 0; i < count; i++) {
+            ImageView soldier = new ImageView(getContext());
+            soldier.setImageResource(resId);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(32* getResources().getDisplayMetrics().density));
+            soldier.setLayoutParams(params);
+
+            layouts[layoutIndex].addView(soldier);
+        }
+    }
+
+    private void setupStartingPosition() {
+        // לבן (White)
+        addSoldier(0, "brown", 2);
+        addSoldier(11, "brown", 5);
+        addSoldier(16, "brown", 3);
+        addSoldier(18, "brown", 5);
+
+        // חום (Brown)
+        addSoldier(23, "white", 2);
+        addSoldier(12, "white", 5);
+        addSoldier(7, "white", 3);
+        addSoldier(5, "white", 5);
+    }
+
+
 
     private void throwCubes() {
         if (imgC1.getVisibility() == View.INVISIBLE && imgC2.getVisibility() == View.INVISIBLE && imgC3.getVisibility() == View.INVISIBLE && imgC4.getVisibility() == View.INVISIBLE) {
@@ -307,7 +380,7 @@ public class Game extends Fragment implements View.OnClickListener {
             imgC2.setVisibility(View.INVISIBLE);
             imgC3.setVisibility(View.INVISIBLE);
             imgC4.setVisibility(View.INVISIBLE);
-            changTurn();// קריאה להחלפת תור/
+            //changTurn();// קריאה להחלפת תור/
             return true;
         }
         return false;
@@ -373,11 +446,20 @@ public class Game extends Fragment implements View.OnClickListener {
         for (int i = 0; i < 24; i++) {
             ImageView imgColor = (ImageView) (layouts[i].getChildAt(0));
             int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
-            if (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState() && layouts[i].getChildAt(0) == null) {
+            if (imgColor != null && imgColor.getDrawable().getConstantState() != ContextCompat.getDrawable(requireContext(), resId).getConstantState() && layouts[i].getChildAt(0) == null) {
                 layouts[i].setClickable(false);
+            } else {
+                layouts[i].setClickable(true);
             }
         }
-
+        for (int j = 0; j < iLEat.getChildCount(); j++) {
+            ImageView imgColor = (ImageView) (iLEat.getChildAt(0));
+            int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+            if (imgColor != null && imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                iLEat.setClickable(true);
+            } else
+                iLEat.setClickable(false);
+        }
         //throw cubes
         if (imgCubes.getId() == view.getId()) {
             throwCubes();

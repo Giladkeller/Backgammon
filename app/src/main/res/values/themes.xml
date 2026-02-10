@@ -6,4 +6,31 @@
     </style>
 
     <style name="Theme.BackGammonFinal" parent="Base.Theme.BackGammonFinal" />
+
+    <style name="PointTop">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="layout_columnWeight">1</item>
+        <item name="android:gravity">top|center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="PointBottom">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="layout_columnWeight">1</item>
+        <item name="android:gravity">bottom|center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="CubeStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:visibility">invisible</item>
+    </style>
 </resources>

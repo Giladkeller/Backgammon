@@ -14,606 +14,128 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="104dp"
+            android:layout_height="80dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvPlayer1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="player1" />
+                android:text="White Player"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPlayer2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="player2" />
+                android:text="Brown Player"
+                android:textColor="#5D4037"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/mainGrid"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:background="@drawable/backgammonboard"
-            android:clipChildren="true"
-            android:clipToPadding="true"
-            app:columnCount="13"
-            app:rowCount="3"
-            tools:ignore="MissingClass">
+            app:columnCount="15"
+            app:rowCount="3">
 
-            <LinearLayout
-                android:id="@+id/lL12"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="10dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
 
-                <ImageView
-                    android:id="@+id/imageView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
+            <LinearLayout android:id="@+id/lL12" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL11" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL10" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL9" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL8" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL7" style="@style/PointTop" />
 
-                <ImageView
-                    android:id="@+id/imageView14"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.8" />
 
-                <ImageView
-                    android:id="@+id/imageView15"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
+            <LinearLayout android:id="@+id/lL6" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL5" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL4" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL3" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL2" style="@style/PointTop" />
+            <LinearLayout android:id="@+id/lL1" style="@style/PointTop" />
 
-                <ImageView
-                    android:id="@+id/imageView16"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
 
-                <ImageView
-                    android:id="@+id/imageView17"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lL11"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL10"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL9"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL8"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView33"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView34"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView35"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL7"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="5dp"
-                android:layout_height="160dp"
-                android:gravity="top|center"
-                android:orientation="vertical" />
-
-            <LinearLayout
-                android:id="@+id/lL6"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="12dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView18"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView19"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView20"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView21"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView22"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL5"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="2dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL4"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL3"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="2dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL2"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL1"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginEnd="12dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="10dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
+            <Space android:layout_width="0dp" android:layout_height="80dp" app:layout_columnSpan="7" app:layout_columnWeight="6.4" />
 
             <LinearLayout
                 android:id="@+id/iLEat"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:gravity="top|center"
+                android:gravity="center"
                 android:orientation="vertical"
-                app:layout_columnWeight="1" />
+                app:layout_columnWeight="0.8" />
+
+            <Space android:layout_width="0dp" android:layout_height="80dp" app:layout_columnSpan="7" app:layout_columnWeight="6.4" />
 
 
-            <LinearLayout
-                android:layout_width="5dp"
-                android:layout_height="80dp"
-                android:gravity="top|center"
-                android:orientation="vertical" />
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="12dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
+            <LinearLayout android:id="@+id/lL13" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL14" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL15" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL16" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL17" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL18" style="@style/PointBottom" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="2dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.8" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="1dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
+            <LinearLayout android:id="@+id/lL19" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL20" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL21" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL22" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL23" style="@style/PointBottom" />
+            <LinearLayout android:id="@+id/lL24" style="@style/PointBottom" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="2dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_marginEnd="12dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL13"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="10dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView28"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView29"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView30"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView31"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView32"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL14"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL15"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL16"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL17"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL18"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:layout_width="5dp"
-                android:layout_height="160dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical" />
-
-            <LinearLayout
-                android:id="@+id/lL19"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="12dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView23"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView24"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView25"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView26"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView27"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/brown_solider" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL20"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="2dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL21"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="1dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL22"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginStart="2dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL23"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1" />
-
-            <LinearLayout
-                android:id="@+id/lL24"
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:layout_marginEnd="12dp"
-                android:gravity="bottom|center"
-                android:orientation="vertical"
-                app:layout_columnWeight="1">
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-
-                <ImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-                    android:src="@drawable/white_solider" />
-            </LinearLayout>
-
+            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
 
         </androidx.gridlayout.widget.GridLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="69dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/imgCubes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/cubes" />
 
             <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/btnRestart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
                 android:text="Restart"
-                android:textSize="34sp" />
-
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="93dp"
-            android:background="#C08431"
+            android:layout_height="80dp"
+            android:gravity="center"
             android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imgC1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/cube4" />
-
-            <ImageView
-                android:id="@+id/imgC2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/cube2" />
-
-            <ImageView
-                android:id="@+id/imgC3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/cube1" />
-
-            <ImageView
-                android:id="@+id/imgC4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/cube6" />
+            <ImageView android:id="@+id/imgC1" style="@style/CubeStyle" />
+            <ImageView android:id="@+id/imgC2" style="@style/CubeStyle" />
+            <ImageView android:id="@+id/imgC3" style="@style/CubeStyle" />
+            <ImageView android:id="@+id/imgC4" style="@style/CubeStyle" />
         </LinearLayout>
 
     </LinearLayout>
-
 </FrameLayout>
