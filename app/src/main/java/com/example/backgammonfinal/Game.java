@@ -41,7 +41,9 @@ public class Game extends Fragment implements View.OnClickListener {
     private Random rnd = new Random();
     private int rndCube1, rndCube2;
 
-    private Button restart;
+    private Button restart, btnTakeOut;
+
+    private LinearLayout lOutWhite, lOutBrown;
 
     @Nullable
     public View onCreateView() {
@@ -77,8 +79,12 @@ public class Game extends Fragment implements View.OnClickListener {
         imgC2.setVisibility(View.INVISIBLE);
         imgC3.setVisibility(View.INVISIBLE);
         imgC4.setVisibility(View.INVISIBLE);
+        lOutWhite = (LinearLayout) v.findViewById(R.id.lOutW);
+        lOutBrown = (LinearLayout) v.findViewById(R.id.lOutB);
         imgCubes = (ImageView) v.findViewById(R.id.imgCubes);
         imgCubes.setOnClickListener(this);
+        btnTakeOut = (Button) v.findViewById(R.id.btnTakeOut);
+        btnTakeOut.setOnClickListener(this);
         restart = (Button) v.findViewById(R.id.btnRestart);
         restart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,14 +129,14 @@ public class Game extends Fragment implements View.OnClickListener {
         Toast.makeText(getContext(), "המשחק אותחל! תור לבן", Toast.LENGTH_SHORT).show();
     }
 
-    private void addSoldier(int layoutIndex, String color, int count) {
+    private void addSoldiers(int layoutIndex, String color, int count) {
         int resId = getResources().getIdentifier(color + "_solider", "drawable", requireContext().getPackageName());
 
         for (int i = 0; i < count; i++) {
             ImageView soldier = new ImageView(getContext());
             soldier.setImageResource(resId);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(32* getResources().getDisplayMetrics().density));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (32 * getResources().getDisplayMetrics().density));
             soldier.setLayoutParams(params);
 
             layouts[layoutIndex].addView(soldier);
@@ -139,18 +145,70 @@ public class Game extends Fragment implements View.OnClickListener {
 
     private void setupStartingPosition() {
         // לבן (White)
-        addSoldier(0, "brown", 2);
-        addSoldier(11, "brown", 5);
-        addSoldier(16, "brown", 3);
-        addSoldier(18, "brown", 5);
+        addSoldiers(0, "brown", 2);
+        addSoldiers(11, "brown", 5);
+        addSoldiers(16, "brown", 3);
+        addSoldiers(18, "brown", 5);
 
         // חום (Brown)
-        addSoldier(23, "white", 2);
-        addSoldier(12, "white", 5);
-        addSoldier(7, "white", 3);
-        addSoldier(5, "white", 5);
+        addSoldiers(23, "white", 2);
+        addSoldiers(12, "white", 5);
+        addSoldiers(7, "white", 3);
+        addSoldiers(5, "white", 5);
     }
 
+    private boolean canTakeOut(LinearLayout[] layouts, int tap, LinearLayout iLEat, int rndCube) {
+        int resId = getResources().getIdentifier(turn + "_solider", "drawable", requireContext().getPackageName());
+        int startHome = turn.equals("white") ? 0 : 18;
+
+        int countInHome = turn.equals("white") ? lOutWhite.getChildCount() : lOutBrown.getChildCount();
+        for (int i = startHome + 5; i >= startHome; i--) {
+            if (layouts[i].getChildCount() > 0) {
+                ImageView img = (ImageView) layouts[i].getChildAt(0);
+                if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                    countInHome += layouts[i].getChildCount();
+                }
+            }
+        }
+
+        if (countInHome < 15) {
+            Toast.makeText(getContext(), "You must move all your pieces to the home area before taking out.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (iLEat.getChildCount() > 0) {
+            for (int i = 0; i < iLEat.getChildCount(); i++) {
+                ImageView imgEat = (ImageView) iLEat.getChildAt(i);
+                if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                    return false; // יש חייל אכול, לא ניתן להוציא
+                }
+            }
+        }
+
+        if (turn.equals("white") && tap - rndCube < -1) {
+            for (int i = tap + 1; i < 6; i++) {
+                if (layouts[i].getChildCount() > 0) {
+                    ImageView img = (ImageView) layouts[i].getChildAt(0);
+                    if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                        return false; // יש חיילים בבית, לא ניתן להוציא
+                    }
+                }
+            }
+        } else {
+            if (turn.equals("brown") && tap + rndCube > 24) {
+                for (int i = tap - 1; i > 17; i--) {
+                    if (layouts[i].getChildCount() > 0) {
+                        ImageView img = (ImageView) layouts[i].getChildAt(0);
+                        if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                            return false; // יש חיילים בבית, לא ניתן להוציא
+                        }
+                    }
+                }
+            }
+        }
+
+        return true; // ניתן להוציא
+    }
 
 
     private void throwCubes() {
@@ -177,6 +235,55 @@ public class Game extends Fragment implements View.OnClickListener {
             for (int i = 0; i < 24; i++) {
                 layouts[i].setClickable(true);
             }
+        }
+    }
+
+    private void performTakeOut(int triangleIndex, int selectedVal, String currentTurn) {
+        if (layouts[triangleIndex].getChildCount() > 0) {
+            // 1. קבלת ייחוס לחייל והסרתו מהמשולש (מניעת השגיאה Specified child already has a parent)
+            ImageView soldier = (ImageView) layouts[triangleIndex].getChildAt(0);
+            layouts[triangleIndex].removeView(soldier);
+
+            // 2. עיצוב החייל מחדש כדי שיתאים למחסן הצידי (גובה נמוך יותר)
+            int height = (int) (12 * getResources().getDisplayMetrics().density); // גובה של 12dp
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+            params.setMargins(0, 2, 0, 2); // רווח קטן בין החיילים בערימה
+            soldier.setLayoutParams(params);
+
+            // 3. הוספה למחסן הנכון
+            if (currentTurn.equals("white")) {
+                lOutWhite.addView(soldier);
+            } else {
+                lOutBrown.addView(soldier);
+            }
+
+            // 4. עדכון לוגיקת המשחק
+            deleteCube(triangleIndex, selectedVal, currentTurn);
+            btnTakeOut.setVisibility(View.INVISIBLE);
+
+            // 5. ניקוי צבעים מהלוח
+            for (int k = 0; k < 24; k++) {
+                layouts[k].setBackgroundColor(Color.TRANSPARENT);
+                canMove[k] = false;
+            }
+
+            // 6. בדיקה אם נשארו מהלכים והחלפת תור במידת הצורך
+            if (!cantMove(layouts, currentTurn)) {
+                changTurn();
+            }
+
+            // בדיקת ניצחון
+            checkWinCondition();
+        }
+    }
+
+    private void checkWinCondition() {
+        if (lOutWhite.getChildCount() == 15) {
+            Toast.makeText(getContext(), "מזל טוב! הלבן ניצח!", Toast.LENGTH_LONG).show();
+            forceEndTurn(); // מאפס קוביות כדי לעצור את המשחק
+        } else if (lOutBrown.getChildCount() == 15) {
+            Toast.makeText(getContext(), "מזל טוב! החום ניצח!", Toast.LENGTH_LONG).show();
+            forceEndTurn();
         }
     }
 
@@ -242,6 +349,21 @@ public class Game extends Fragment implements View.OnClickListener {
                     canMove[selected] = true;
                 } else {
                     layouts[selected].setBackgroundColor(Colors.RED.get());
+                }
+            } else {
+                // מחוץ ללוח, בדוק אם ניתן להוציא
+                if (canTakeOut(layouts, i, iLEat, (turn.equals("white")) ? selected + i : selected - i)) {
+                    canMove[i] = true; // אפשרות להוציא
+                    layouts[i].setBackgroundColor(Colors.GREEN.get());
+                    btnTakeOut.setVisibility(View.VISIBLE);
+                    btnTakeOut.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            performTakeOut(i, selected, turn);
+                        }
+                    });
+                } else {
+                    canMove[i] = false; // לא ניתן להוציא
                 }
             }
         }
@@ -335,11 +457,9 @@ public class Game extends Fragment implements View.OnClickListener {
     private boolean cantMove(LinearLayout[] layouts, String turn) {
         if (rndCube1 == 0 && rndCube2 == 0) return false;
 
-        boolean canDoAnything = false;
-        boolean[] tempMove = new boolean[24];
         int resIdSolider = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
 
-        // שלב א': בדיקה אם יש חייל אכול לשחקן הנוכחי
+        // בדיקה אם יש חייל אכול
         boolean hasEaten = false;
         for (int j = 0; j < iLEat.getChildCount(); j++) {
             ImageView img = (ImageView) iLEat.getChildAt(j);
@@ -350,40 +470,59 @@ public class Game extends Fragment implements View.OnClickListener {
         }
 
         if (hasEaten) {
-            // אם יש אכול, הבדיקה היחידה שקובעת היא אם הוא יכול להיכנס ללוח (אינדקס 1-)
-            if (rndCube1 != 0) paintLinear(selectLinear(rndCube1, -1, turn), layouts, -1, tempMove, iLEat, 0, turn);
-            if (rndCube2 != 0) paintLinear(selectLinear(rndCube2, -1, turn), layouts, -1, tempMove, iLEat, 0, turn);
+            // בודקים רק אם האכול יכול להיכנס (אינדקס -1)
+            if (canActuallyMove(-1, rndCube1, turn) || canActuallyMove(-1, rndCube2, turn)) {
+                return false;
+            }
         } else {
-            // אם אין אכולים, בודקים את כל החיילים על הלוח כרגיל
+            // בודקים את כל המשולשים על הלוח
             for (int i = 0; i < 24; i++) {
                 if (layouts[i].getChildCount() > 0) {
                     ImageView img = (ImageView) layouts[i].getChildAt(0);
                     if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resIdSolider).getConstantState()) {
-                        if (rndCube1 != 0) paintLinear(selectLinear(rndCube1, i, turn), layouts, i, tempMove, iLEat, 0, turn);
-                        if (rndCube2 != 0) paintLinear(selectLinear(rndCube2, i, turn), layouts, i, tempMove, iLEat, 0, turn);
+                        if (canActuallyMove(i, rndCube1, turn) || canActuallyMove(i, rndCube2, turn)) {
+                            return false; // נמצא לפחות מהלך אחד חוקי
+                        }
                     }
                 }
             }
         }
 
-        // בדיקה אם נמצא מהלך חוקי כלשהו
-        for (int c = 0; c < 24; c++) {
-            if (tempMove[c]) canDoAnything = true;
-            layouts[c].setBackgroundColor(Color.TRANSPARENT); // איפוס צבעי הבדיקה
+        // אם הגענו לכאן - אין מהלכים חוקיים
+        Toast.makeText(getContext(), "אין מהלכים חוקיים - התור עובר", Toast.LENGTH_SHORT).show();
+        forceEndTurn();
+        return true;
+    }
+
+    // פונקציית עזר חדשה שבודקת חוקיות בלי לשנות UI ובלי לקרוס
+    private boolean canActuallyMove(int fromIndex, int dice, String turn) {
+        if (dice == 0) return false;
+
+        int target = selectLinear(dice, fromIndex, turn);
+
+        // מקרה של הוצאה מהלוח
+        if (target < 0 || target > 23) {
+            return canTakeOut(layouts, fromIndex, iLEat, dice);
         }
 
-        if (!canDoAnything) {
-            // אם הגענו לכאן, סימן שאין מהלכים חוקיים - מאפסים קוביות ומעבירים תור
-            rndCube1 = 0;
-            rndCube2 = 0;
-            imgC1.setVisibility(View.INVISIBLE);
-            imgC2.setVisibility(View.INVISIBLE);
-            imgC3.setVisibility(View.INVISIBLE);
-            imgC4.setVisibility(View.INVISIBLE);
-            //changTurn();// קריאה להחלפת תור/
-            return true;
-        }
-        return false;
+        // מקרה של תנועה רגילה על הלוח
+        if (layouts[target].getChildCount() <= 1) return true; // ריק או חייל אחד (אכילה)
+
+        ImageView targetImg = (ImageView) layouts[target].getChildAt(0);
+        int resIdSelf = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
+
+        // חוקי אם זה החייל שלי
+        return targetImg.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resIdSelf).getConstantState();
+    }
+
+    // פונקציה לניקוי תור כשאין מהלכים
+    private void forceEndTurn() {
+        rndCube1 = 0;
+        rndCube2 = 0;
+        imgC1.setVisibility(View.INVISIBLE);
+        imgC2.setVisibility(View.INVISIBLE);
+        imgC3.setVisibility(View.INVISIBLE);
+        imgC4.setVisibility(View.INVISIBLE);
     }
 
     private void deleteCube(int selected, int j, String turn) {
@@ -397,9 +536,9 @@ public class Game extends Fragment implements View.OnClickListener {
         if (rndCube1 == rndCube2) {
             if (imgC4.getVisibility() == View.VISIBLE) imgC4.setVisibility(View.INVISIBLE);
             else if (imgC3.getVisibility() == View.VISIBLE) imgC3.setVisibility(View.INVISIBLE);
-            else if (imgC1.getVisibility() == View.VISIBLE) imgC1.setVisibility(View.INVISIBLE);
-            else if (imgC2.getVisibility() == View.VISIBLE) {
-                imgC2.setVisibility(View.INVISIBLE);
+            else if (imgC2.getVisibility() == View.VISIBLE) imgC2.setVisibility(View.INVISIBLE);
+            else if (imgC1.getVisibility() == View.VISIBLE) {
+                imgC1.setVisibility(View.INVISIBLE);
                 rndCube1 = 0;
                 rndCube2 = 0;
             }

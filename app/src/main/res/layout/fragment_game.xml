@@ -17,25 +17,53 @@
             android:layout_height="80dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvPlayer1"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="White Player"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvPlayer2"
+
+                <TextView
+                    android:id="@+id/tvPlayer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="White Player"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/lOutW"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="Brown Player"
-                android:textColor="#5D4037"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPlayer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="Brown Player"
+                    android:textColor="#5D4037"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/lOutB"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <androidx.gridlayout.widget.GridLayout
@@ -46,28 +74,75 @@
             app:columnCount="15"
             app:rowCount="3">
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.4" />
 
-            <LinearLayout android:id="@+id/lL12" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL11" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL10" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL9" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL8" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL7" style="@style/PointTop" />
+            <LinearLayout
+                android:id="@+id/lL12"
+                style="@style/PointTop" />
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.8" />
+            <LinearLayout
+                android:id="@+id/lL11"
+                style="@style/PointTop" />
 
-            <LinearLayout android:id="@+id/lL6" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL5" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL4" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL3" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL2" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL1" style="@style/PointTop" />
+            <LinearLayout
+                android:id="@+id/lL10"
+                style="@style/PointTop" />
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
+            <LinearLayout
+                android:id="@+id/lL9"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL8"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL7"
+                style="@style/PointTop" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.8" />
+
+            <LinearLayout
+                android:id="@+id/lL6"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL5"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL4"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL3"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL2"
+                style="@style/PointTop" />
+
+            <LinearLayout
+                android:id="@+id/lL1"
+                style="@style/PointTop" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.4" />
 
 
-            <Space android:layout_width="0dp" android:layout_height="80dp" app:layout_columnSpan="7" app:layout_columnWeight="6.4" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                app:layout_columnSpan="7"
+                app:layout_columnWeight="6.4" />
 
             <LinearLayout
                 android:id="@+id/iLEat"
@@ -77,28 +152,75 @@
                 android:orientation="vertical"
                 app:layout_columnWeight="0.8" />
 
-            <Space android:layout_width="0dp" android:layout_height="80dp" app:layout_columnSpan="7" app:layout_columnWeight="6.4" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                app:layout_columnSpan="7"
+                app:layout_columnWeight="6.4" />
 
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.4" />
 
-            <LinearLayout android:id="@+id/lL13" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL14" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL15" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL16" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL17" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL18" style="@style/PointBottom" />
+            <LinearLayout
+                android:id="@+id/lL13"
+                style="@style/PointBottom" />
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.8" />
+            <LinearLayout
+                android:id="@+id/lL14"
+                style="@style/PointBottom" />
 
-            <LinearLayout android:id="@+id/lL19" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL20" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL21" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL22" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL23" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL24" style="@style/PointBottom" />
+            <LinearLayout
+                android:id="@+id/lL15"
+                style="@style/PointBottom" />
 
-            <Space android:layout_width="0dp" android:layout_height="160dp" app:layout_columnWeight="0.4" />
+            <LinearLayout
+                android:id="@+id/lL16"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL17"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL18"
+                style="@style/PointBottom" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.8" />
+
+            <LinearLayout
+                android:id="@+id/lL19"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL20"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL21"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL22"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL23"
+                style="@style/PointBottom" />
+
+            <LinearLayout
+                android:id="@+id/lL24"
+                style="@style/PointBottom" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                app:layout_columnWeight="0.4" />
 
         </androidx.gridlayout.widget.GridLayout>
 
@@ -119,11 +241,21 @@
                 android:id="@+id/btnRestart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="20dp"
+                android:layout_weight="1"
                 android:text="Restart"
                 android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnTakeOut"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:text="take out"
+                android:textSize="10sp"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -131,10 +263,22 @@
             android:layout_height="80dp"
             android:gravity="center"
             android:orientation="horizontal">
-            <ImageView android:id="@+id/imgC1" style="@style/CubeStyle" />
-            <ImageView android:id="@+id/imgC2" style="@style/CubeStyle" />
-            <ImageView android:id="@+id/imgC3" style="@style/CubeStyle" />
-            <ImageView android:id="@+id/imgC4" style="@style/CubeStyle" />
+
+            <ImageView
+                android:id="@+id/imgC1"
+                style="@style/CubeStyle" />
+
+            <ImageView
+                android:id="@+id/imgC2"
+                style="@style/CubeStyle" />
+
+            <ImageView
+                android:id="@+id/imgC3"
+                style="@style/CubeStyle" />
+
+            <ImageView
+                android:id="@+id/imgC4"
+                style="@style/CubeStyle" />
         </LinearLayout>
 
     </LinearLayout>
