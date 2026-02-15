@@ -27,6 +27,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A simple {@link Fragment} subclass.
  * <p>
@@ -34,6 +39,8 @@ import androidx.annotation.Nullable;
  */
 public class Game extends Fragment implements View.OnClickListener {
 
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LinearLayout[] layouts;
 
     private LinearLayout layout, iLEat;
@@ -279,12 +286,79 @@ public class Game extends Fragment implements View.OnClickListener {
 
     private void checkWinCondition() {
         if (lOutWhite.getChildCount() == 15) {
-            Toast.makeText(getContext(), "מזל טוב! הלבן ניצח!", Toast.LENGTH_LONG).show();
-            forceEndTurn(); // מאפס קוביות כדי לעצור את המשחק
+            int points = calculatePoints("white", "brown");
+            String type = getWinType(points);
+            Toast.makeText(getContext(), "הלבן ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
+            updateLeaderboard("white", points);
+            forceEndTurn();
         } else if (lOutBrown.getChildCount() == 15) {
-            Toast.makeText(getContext(), "מזל טוב! החום ניצח!", Toast.LENGTH_LONG).show();
+            int points = calculatePoints("brown", "white");
+            String type = getWinType(points);
+            Toast.makeText(getContext(), "החום ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
+            updateLeaderboard("brown", points);
             forceEndTurn();
         }
+    }
+
+    // פונקציית עזר להחזרת שם הניצחון להצגה ב-Toast
+    private String getWinType(int points) {
+        switch (points) {
+            case 4: return  "ניצחון ענק! מארס כוכבי! ⭐⭐⭐⭐";
+            case 3: return  "מארס טורקי! 🎩⭐⭐";
+            case 2: return  "מארס! 🎲⭐";
+            default: return "רגיל";
+        }
+    }
+
+    private int calculatePoints(String winner, String loser) {
+        LinearLayout lOutLoser = loser.equals("white") ? lOutWhite : lOutBrown;
+
+        // 1. ניצחון רגיל (1 נקודה): המפסיד הצליח להוציא לפחות חייל אחד
+        if (lOutLoser.getChildCount() > 0) {
+            return 1;
+        }
+
+        // מעכשיו אנחנו יודעים שהמפסיד לא הוציא כלום (פוטנציאל למארס)
+        int loserResId = getResources().getIdentifier(loser + "_solider", "drawable", requireContext().getPackageName());
+
+        // 2. מארס כוכבי (4 נקודות): לא הוציא כלום + יש לו חייל אכול (על ה-Bar)
+        for (int i = 0; i < iLEat.getChildCount(); i++) {
+            ImageView img = (ImageView) iLEat.getChildAt(i);
+            if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), loserResId).getConstantState()) {
+                return 4;
+            }
+        }
+
+        // 3. מארס טורקי (3 נקודות): לא הוציא כלום + יש לו חייל בבית של המנצח
+        // בית הלבן: 0-5, בית החום: 18-23
+        int winnerHomeStart = winner.equals("white") ? 0 : 18;
+        int winnerHomeEnd = winner.equals("white") ? 5 : 23;
+
+        for (int i = winnerHomeStart; i <= winnerHomeEnd; i++) {
+            if (layouts[i].getChildCount() > 0) {
+                ImageView img = (ImageView) layouts[i].getChildAt(0);
+                if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), loserResId).getConstantState()) {
+                    return 3;
+                }
+            }
+        }
+
+        // 4. מארס רגיל (2 נקודות): לא הוציא כלום, אין אכולים, וכל החיילים יצאו מבית המנצח
+        return 2;
+    }
+
+    private void updateLeaderboard(String winnerColor, int pointsToAdd) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", winnerColor);
+        data.put("points", FieldValue.increment(pointsToAdd));
+        data.put("timestamp", com.google.firebase.Timestamp.now());
+
+        db.collection("leaderboard").document(winnerColor)
+                .set(data, com.google.firebase.firestore.SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    if(getContext() != null)
+                        Toast.makeText(getContext(), "נוספו " + pointsToAdd + " נקודות!", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private int selectLinear(int rndCube, int i, String turn) {

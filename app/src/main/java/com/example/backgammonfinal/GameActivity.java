@@ -42,7 +42,7 @@ public class GameActivity extends AppCompatActivity {
                         switch (position) {
                             case 0: tab.setText("Roles"); break;
                             case 1: tab.setText("GAME"); break;
-                            case 2: tab.setText("Chat"); break;
+                            case 2: tab.setText("Leader Board"); break;
                         }
                         // אופציונלי: אייקונים
                         // if (position == 0) tab.setIcon(R.drawable.ic_home);

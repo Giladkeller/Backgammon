@@ -20,7 +20,7 @@ public class MainPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new Game();
             case 2:
-                return new Chat();
+                return new LEADERBOARD();
             default:
                 return new Role();
         }

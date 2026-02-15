@@ -21,6 +21,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 public class OpenActivity extends AppCompatActivity {
     // **** SQLite database
     public  DatabaseHelper dbHelper;
@@ -60,6 +63,11 @@ public class OpenActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }, 1500);
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
     }
 
     public void createSignInDialog() {
