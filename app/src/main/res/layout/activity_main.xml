@@ -10,95 +10,119 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:id="@+id/main_menu_layout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="right"
-        android:background="#D2B48C"
-        app:layout_constraintBottom_toTopOf="@+id/imgBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039"
-        app:title="BackGammon"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/tvUserName"
-        android:layout_width="393dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="#aa00ff"
-        android:textSize="40sp"
-        android:textStyle="bold|italic"
-        app:srcCompat="@android:drawable/ic_menu_add" />
-
-    <TextView
-        android:id="@+id/tvHead"
-        android:layout_width="393dp"
-        android:layout_height="79dp"
-        android:gravity="center"
-        android:text="Main Menu"
-        android:textColor="#E15A4B4B"
-        android:textSize="48sp"
-        android:textStyle="bold|italic"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="154dp"
-        android:layout_height="72dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:backgroundTint="#555eee"
-        android:text="Register" />
+        android:background="#E9B47623"
+        android:orientation="vertical">
 
-    <Space
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="right"
+            android:background="#D2B48C"
+            app:layout_constraintBottom_toTopOf="@+id/imgBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.039"
+            app:title="BackGammon"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="393dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#aa00ff"
+            android:textSize="40sp"
+            android:textStyle="bold|italic"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <TextView
+            android:id="@+id/tvHead"
+            android:layout_width="393dp"
+            android:layout_height="79dp"
+            android:gravity="center"
+            android:text="Main Menu"
+            android:textColor="#E15A4B4B"
+            android:textSize="48sp"
+            android:textStyle="bold|italic"
+            app:srcCompat="@android:drawable/ic_menu_revert" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="154dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#555eee"
+            android:text="Register" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="162dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#555eee"
+            android:text="Login" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
+
+        <Button
+            android:id="@+id/btnMusic"
+            android:layout_width="154dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#555eee"
+            android:text="MusicList" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <Button
+            android:id="@+id/btnScoreList"
+            android:layout_width="154dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#555eee"
+            android:text="ScoreList" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="21dp" />
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="154dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#555eee"
+            android:text="Exit" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="18dp" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="162dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:backgroundTint="#555eee"
-        android:text="Login" />
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/backicon"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+    </FrameLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="18dp" />
-
-    <Button
-        android:id="@+id/btnMusic"
-        android:layout_width="154dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center"
-        android:backgroundTint="#555eee"
-        android:text="MusicList" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp" />
-
-    <Button
-        android:id="@+id/btnScoreList"
-        android:layout_width="154dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center"
-        android:backgroundTint="#555eee"
-        android:text="ScoreList" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="21dp" />
-
-    <Button
-        android:id="@+id/btnExit"
-        android:layout_width="154dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center"
-        android:backgroundTint="#555eee"
-        android:text="Exit" />
 </LinearLayout>

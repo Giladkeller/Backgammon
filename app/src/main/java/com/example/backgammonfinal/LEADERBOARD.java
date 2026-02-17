@@ -1,6 +1,7 @@
 package com.example.backgammonfinal;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +38,10 @@ public class LEADERBOARD extends Fragment {
     }
 
     private void setupLeaderboardQuery() {
-        // 1. הגדרת השאילתה לשליפת 10 המובילים לפי ניקוד
+        // 1. הגדרת השאילתה לשליפת המובילים לפי ניקוד
         Query query = FirebaseFirestore.getInstance()
                 .collection("leaderboard")
-                .orderBy("points", Query.Direction.DESCENDING)
-                .limit(10);
+                .orderBy("points", Query.Direction.DESCENDING);
 
         // 2. הגדרת האופציות לאדפטר
         FirestoreRecyclerOptions<Player> options = new FirestoreRecyclerOptions.Builder<Player>()
@@ -52,30 +52,51 @@ public class LEADERBOARD extends Fragment {
         adapter = new FirestoreRecyclerAdapter<Player, PlayerViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PlayerViewHolder holder, int position, @NonNull Player model) {
+                // 1. הגדרת הטקסט
                 holder.username.setText(model.getUsername());
                 holder.points.setText(String.valueOf(model.getPoints()));
 
-                // עיצוב לפי מיקום (Position)
+                // 2. יצירת מסגרת אליפטית דינמית (Background)
+                GradientDrawable shape = new GradientDrawable();
+                shape.setShape(GradientDrawable.RECTANGLE);
+                shape.setCornerRadius(100f); // ערך גבוה יוצר מראה אליפטי/מעוגל מאוד
+                shape.setStroke(3, Color.parseColor("#808080")); // עובי מסגרת וצבע אפור
+
+                // 3. הגדרת רווח בין השורות (Margins) והגדלת הגובה
+                // שים לב: השתמש ב-LayoutParams שמתאים למה שעוטף את ה-item_player (כנראה RecyclerView.LayoutParams)
+                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+                layoutParams.setMargins(20, 10, 20, 30); // שמאל, למעלה, ימין, למטה (ה-30 יוצר את הרווח)
+                holder.itemView.setLayoutParams(layoutParams);
+
+                // הגדרת גובה פנימי (Padding) כדי להגדיל את השורה
+                holder.itemView.setPadding(40, 40, 40, 40);
+
+                // 4. לוגיקת צבעים לפי מיקום
                 switch (position) {
-                    case 0: // מקום ראשון
-                        holder.username.setTextColor(Color.parseColor("#FFD700")); // צבע זהב
+                    case 0: // זהב
+                        shape.setColor(Color.parseColor("#FFD700"));
                         holder.username.setText("👑 " + model.getUsername());
-                        holder.itemView.setBackgroundColor(Color.parseColor("#1AFFE700")); // רקע צהבהב עדין
+                        holder.username.setTextSize(22); // הגדלת פונט למקום ראשון
                         break;
-                    case 1: // מקום שני
-                        holder.username.setTextColor(Color.parseColor("#C0C0C0")); // צבע כסף
+                    case 1: // כסף
+                        shape.setColor(Color.parseColor("#C0C0C0"));
                         holder.username.setText("🥈 " + model.getUsername());
+                        holder.username.setTextSize(20);
                         break;
-                    case 2: // מקום שלישי
-                        holder.username.setTextColor(Color.parseColor("#CD7F32")); // צבע ארד
+                    case 2: // ארד
+                        shape.setColor(Color.parseColor("#CD7F32"));
                         holder.username.setText("🥉 " + model.getUsername());
+                        holder.username.setTextSize(18);
                         break;
-                    default: // כל השאר
-                        holder.username.setTextColor(Color.WHITE);
-                        holder.username.setText((position + 1) + ". " + model.getUsername());
-                        holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                    default: // שאר השורות
+                        shape.setColor(Color.WHITE);
+                        holder.username.setText(" " + (position + 1) + "  " + model.getUsername());
+                        holder.username.setTextSize(16);
                         break;
                 }
+
+                // החלת העיצוב על השורה
+                holder.itemView.setBackground(shape);
             }
 
             @NonNull

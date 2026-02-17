@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -348,16 +349,39 @@ public class Game extends Fragment implements View.OnClickListener {
     }
 
     private void updateLeaderboard(String winnerColor, int pointsToAdd) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("username", winnerColor);
-        data.put("points", FieldValue.increment(pointsToAdd));
-        data.put("timestamp", com.google.firebase.Timestamp.now());
+        if (winnerColor == null || winnerColor.isEmpty()) return;
 
-        db.collection("leaderboard").document(winnerColor)
+        // 1. נרמול ה-ID: הופך את " Red" ל-"red" כדי למנוע כפילויות במסד הנתונים
+        String documentId = winnerColor.trim().toLowerCase();
+
+        // 2. הכנת הנתונים לעדכון
+        Map<String, Object> data = new HashMap<>();
+
+        // שומרים את השם המקורי (למשל "Red") בשדה נפרד לצורך תצוגה יפה
+        data.put("username", winnerColor.trim());
+
+        // שימוש ב-increment מבטיח חישוב אטומי בצד השרת (מונע התנגשויות)
+        data.put("points", FieldValue.increment(pointsToAdd));
+
+        // שימוש בזמן השרת (מדויק יותר מזמן המכשיר)
+        data.put("timestamp", FieldValue.serverTimestamp());
+
+        // 3. ביצוע העדכון עם SetOptions.merge()
+        // אם המסמך לא קיים - הוא ייוצר. אם הוא קיים - רק השדות האלו יתעדכנו/יתווספו.
+        db.collection("leaderboard").document(documentId)
                 .set(data, com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                    if(getContext() != null)
-                        Toast.makeText(getContext(), "נוספו " + pointsToAdd + " נקודות!", Toast.LENGTH_SHORT).show();
+                    Log.d("Firestore", "Leaderboard updated for: " + documentId);
+                    if (getContext() != null) {
+                        if (isAdded() && getContext() != null) {
+                            Toast.makeText(getContext(),
+                                    "נוספו " + pointsToAdd + " נקודות ל-" + winnerColor.trim() + "!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error updating leaderboard", e);
                 });
     }
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Intent intent;
     // for login / register players card
     private Dialog dialog;
+
+    private ImageView imgBack;
     private EditText editdUsername, editDEmail, editDPassword;
     private Button btnDlogin,btnDRegister;
     private TextView tvUserName,tvDMessage,btnNewAccount;
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnScoreList.setOnClickListener(this);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
+        imgBack = (ImageView) findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(this);
     }
 
     @Override
@@ -80,10 +85,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == btnLogin.getId()) {
             createLoginDialog();
         }
-//        if (v.getId() == btnScoreList.getId()) {
-//            intent = new Intent(this, LeaderBoard.class);
-//            startActivity(intent);
-//        }
+        if (v.getId() == R.id.btnScoreList) {
+            findViewById(R.id.main_menu_layout).setVisibility(View.GONE); // הסתרת התפריט
+            findViewById(R.id.main_container).setVisibility(View.VISIBLE);
+            // החלפת התוכן של ה-Activity בפרגמנט
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, new LEADERBOARD())
+                    .addToBackStack(null)
+                    .commit();
+        }
+        if (v.getId() == R.id.imgBack) {
+            findViewById(R.id.main_container).setVisibility(View.GONE);
+            findViewById(R.id.main_menu_layout).setVisibility(View.VISIBLE);
+        }
 //        if (v.getId() == btnMusic.getId()) {
 //            intent = new Intent(this, MusicList.class);
 //            startActivity(intent);
@@ -170,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!email.contains("@") || !email.contains(".com")) {
                     tvDMessage.setVisibility(View.VISIBLE);
                     tvDMessage.setText("Invalid email format. Email must contain '@' and '.com'");
+                    return;
                 }
                 boolean isRegistered = dbHelper.registerUser(username, email, password);
                 tvDMessage.setVisibility(View.VISIBLE);
