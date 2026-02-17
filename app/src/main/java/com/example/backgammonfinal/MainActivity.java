@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addToBackStack(null)
                     .commit();
         }
+        // to leader board
         if (v.getId() == R.id.imgBack) {
             findViewById(R.id.main_container).setVisibility(View.GONE);
             findViewById(R.id.main_menu_layout).setVisibility(View.VISIBLE);
