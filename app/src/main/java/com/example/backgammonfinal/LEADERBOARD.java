@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.Query;
 public class LEADERBOARD extends Fragment {
 
     private RecyclerView recyclerView;
+
+    private Button btnBack;
     private FirestoreRecyclerAdapter adapter;
 
     @Nullable
@@ -31,6 +34,15 @@ public class LEADERBOARD extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewLeaderboard);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnBack = (Button) view.findViewById(R.id.btnBackToGame); // וודא שיש לך כפתור כזה ב-XML
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // פקודה שאומרת למנהל הפרגמנט לחזור אחורה
+                getParentFragmentManager().popBackStack();
+            }
+        });
 
         setupLeaderboardQuery();
 

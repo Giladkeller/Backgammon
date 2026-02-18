@@ -13,9 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,14 +64,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvUserName.setText(" Wellcome " + this.savedUsername + "! ");
             this.btnRegister.setText("Sign in");
         }
-        btnMusic = (Button) findViewById(R.id.btnMusic);
-        btnMusic.setOnClickListener(this);
+//        btnMusic = (Button) findViewById(R.id.btnMusic);
+//        btnMusic.setOnClickListener(this);
         btnScoreList = (Button) findViewById(R.id.btnScoreList);
         btnScoreList.setOnClickListener(this);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
-        imgBack = (ImageView) findViewById(R.id.imgBack);
-        imgBack.setOnClickListener(this);
+//        imgBack = (ImageView) findViewById(R.id.imgBack);
+//        imgBack.setOnClickListener(this);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                // יוצרים השהיה קטנה כדי לתת ל-slide_down לסיים להחליק למטה
+                new android.os.Handler().postDelayed(() -> {
+                    View container = findViewById(R.id.main_container);
+                    if (container != null) {
+                        container.setVisibility(View.GONE);
+                    }
+                }, 500); // 500ms זה הזמן שהגדרנו בתוך ה-XML של האנימציה
+            }
+        });
     }
 
     @Override
@@ -85,19 +95,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == btnLogin.getId()) {
             createLoginDialog();
         }
-        if (v.getId() == R.id.btnScoreList) {
-            findViewById(R.id.main_menu_layout).setVisibility(View.GONE); // הסתרת התפריט
+        if (v.getId() == btnScoreList.getId()) {
+            //findViewById(R.id.main_menu_layout).setVisibility(View.GONE); // הסתרת התפריט
             findViewById(R.id.main_container).setVisibility(View.VISIBLE);
             // החלפת התוכן של ה-Activity בפרגמנט
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_up,    // 1. כניסה של הפרגמנט החדש
+                            0,                  // 2. יציאה של התפריט (אנחנו לא מוציאים אותו, אז 0)
+                            0,                  // 3. כניסה של התפריט כשחוזרים אליו
+                            R.anim.slide_down   // 4. יציאה של הפרגמנט (ה-Leaderboard) למטה
+                    )
                     .replace(R.id.main_container, new LEADERBOARD())
                     .addToBackStack(null)
                     .commit();
         }
-        if (v.getId() == R.id.imgBack) {
-            findViewById(R.id.main_container).setVisibility(View.GONE);
-            findViewById(R.id.main_menu_layout).setVisibility(View.VISIBLE);
-        }
+//        if (v.getId() == imgBack.getId()) {
+//            findViewById(R.id.main_container).setVisibility(View.GONE);
+//            findViewById(R.id.main_menu_layout).setVisibility(View.VISIBLE);
+//        }
 //        if (v.getId() == btnMusic.getId()) {
 //            intent = new Intent(this, MusicList.class);
 //            startActivity(intent);

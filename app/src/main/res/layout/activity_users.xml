@@ -5,103 +5,118 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_users"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".users">
 
     <ImageView
         android:id="@+id/imgBack"
-        android:layout_width="82dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         app:srcCompat="@drawable/backicon" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="66dp" />
 
     <TextView
         android:id="@+id/tvTitlle"
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="serif"
         android:gravity="center"
-        android:text="Players Name"
-        android:textSize="48sp" />
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:text="Enter Players"
+        android:textColor="#FFD700"
+        android:textSize="42sp"
+        android:textStyle="bold|italic" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="84dp" />
+    <View
+        android:layout_width="150dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:background="#FFD700" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="#51342f"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/imgContact1"
-            android:layout_width="400sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/contact" />
 
         <EditText
             android:id="@+id/edPlayer1"
-            android:layout_width="641sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:hint="please enter first name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:background="#f2f2f2"
+            android:hint="Player 1 Name"
+            android:inputType="textPersonName"
+            android:textColor="#A1887F"
+            android:textColorHint="#A1887F"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="38dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:orientation="horizontal">
+        android:layout_height="80dp"
+        android:layout_marginBottom="50dp"
+        android:background="#51342f"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/imgContact2"
-            android:layout_width="400sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/contact" />
 
         <EditText
             android:id="@+id/edPlayer2"
-            android:layout_width="641sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left|center_vertical"
-            android:hint="please enter second name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:background="#f2f2f2"
+            android:hint="Player 2 Name"
+            android:inputType="textPersonName"
+            android:textColor="#A1887F"
+            android:textColorHint="#A1887F"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="69dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="99dp"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="165dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/imgIconPlay"
-            android:layout_width="107dp"
-            android:layout_height="97dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             app:srcCompat="@drawable/play_icon" />
-
-        <Space
-            android:layout_width="138dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Start Match"
+        android:textColor="#FFD700"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
