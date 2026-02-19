@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E1B10"
+    android:background="#4E342E"
     tools:context=".Game">
 
     <LinearLayout
@@ -40,7 +40,6 @@
                     android:id="@+id/lOutW"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:gravity="center"
                     android:orientation="horizontal" />
             </LinearLayout>
 
@@ -70,7 +69,6 @@
                     android:id="@+id/lOutB"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:gravity="center"
                     android:orientation="horizontal" />
             </LinearLayout>
         </LinearLayout>

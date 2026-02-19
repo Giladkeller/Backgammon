@@ -1,8 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.BackGammonFinal" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.BackGammonFinal" parent="Base.Theme.BackGammonFinal" />
@@ -33,4 +30,11 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:visibility">invisible</item>
     </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

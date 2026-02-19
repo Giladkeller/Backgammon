@@ -91,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#A68966"
-        android:text="חזור למשחק"
+        android:text="Back To Main Menu"
         android:textColor="#2E1B10"
         android:textStyle="bold" />
 

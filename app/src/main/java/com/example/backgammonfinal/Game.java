@@ -117,6 +117,8 @@ public class Game extends Fragment implements View.OnClickListener {
 
         // 2. ניקוי אזור האכולים
         iLEat.removeAllViews();
+        lOutWhite.removeAllViews();
+        lOutBrown.removeAllViews();
 
         // 3. איפוס משתני המשחק
         turn = "white";
@@ -166,56 +168,66 @@ public class Game extends Fragment implements View.OnClickListener {
     }
 
     private boolean canTakeOut(LinearLayout[] layouts, int tap, LinearLayout iLEat, int rndCube) {
+        if (rndCube == 0) return false;
+
         int resId = getResources().getIdentifier(turn + "_solider", "drawable", requireContext().getPackageName());
         int startHome = turn.equals("white") ? 0 : 18;
+        int endHome = turn.equals("white") ? 5 : 23;
 
+        // 1. בדיקה שכל החיילים בבית
         int countInHome = turn.equals("white") ? lOutWhite.getChildCount() : lOutBrown.getChildCount();
-        for (int i = startHome + 5; i >= startHome; i--) {
+        for (int i = 0; i < 24; i++) {
             if (layouts[i].getChildCount() > 0) {
                 ImageView img = (ImageView) layouts[i].getChildAt(0);
                 if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                    // אם החייל מחוץ לטווח הבית
+                    if (i < startHome || i > endHome) return false;
                     countInHome += layouts[i].getChildCount();
                 }
             }
         }
 
-        if (countInHome < 15) {
-            Toast.makeText(getContext(), "You must move all your pieces to the home area before taking out.", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (iLEat.getChildCount() > 0) {
-            for (int i = 0; i < iLEat.getChildCount(); i++) {
-                ImageView imgEat = (ImageView) iLEat.getChildAt(i);
-                if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-                    return false; // יש חייל אכול, לא ניתן להוציא
-                }
+        // בדיקת אכולים - אם יש אכול מהצבע שלי, אי אפשר להוציא
+        for (int i = 0; i < iLEat.getChildCount(); i++) {
+            ImageView imgEat = (ImageView) iLEat.getChildAt(i);
+            if (imgEat.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
+                return false;
             }
         }
 
-        if (turn.equals("white") && tap - rndCube < -1) {
-            for (int i = tap + 1; i < 6; i++) {
-                if (layouts[i].getChildCount() > 0) {
-                    ImageView img = (ImageView) layouts[i].getChildAt(0);
-                    if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-                        return false; // יש חיילים בבית, לא ניתן להוציא
-                    }
+        if (countInHome < 15) return false;
+
+        // 2. חישוב המרחק המדויק ליציאה
+        // לבן הולך מ-5 ל-0 (יוצא במינוס 1). חום מ-18 ל-23 (יוצא ב-24).
+        int distanceToExit = turn.equals("white") ? (tap + 1) : (24 - tap);
+
+        // אופציה א': הקובייה בדיוק במידה
+        if (rndCube == distanceToExit) return true;
+
+        // אופציה ב': הקובייה גדולה מהמרחק (מותר רק אם אין חייל מאחוריו)
+        if (rndCube > distanceToExit) {
+            if (turn.equals("white")) {
+                for (int i = tap + 1; i <= 5; i++) { // לבן: לבדוק משבצות גבוהות יותר בתוך הבית
+                    if (isPlayerSoldierAt(i, resId)) return false;
+                }
+            } else {
+                for (int i = tap - 1; i >= 18; i--) { // חום: לבדוק משבצות נמוכות יותר בתוך הבית
+                    if (isPlayerSoldierAt(i, resId)) return false;
                 }
             }
-        } else {
-            if (turn.equals("brown") && tap + rndCube > 24) {
-                for (int i = tap - 1; i > 17; i--) {
-                    if (layouts[i].getChildCount() > 0) {
-                        ImageView img = (ImageView) layouts[i].getChildAt(0);
-                        if (img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
-                            return false; // יש חיילים בבית, לא ניתן להוציא
-                        }
-                    }
-                }
-            }
+            return true;
         }
 
-        return true; // ניתן להוציא
+        return false; // הקובייה קטנה מהמרחק
+    }
+
+    // פונקציית עזר לבדיקה אם יש חייל שלי במשבצת מסוימת
+    private boolean isPlayerSoldierAt(int index, int resId) {
+        if (layouts[index].getChildCount() > 0) {
+            ImageView img = (ImageView) layouts[index].getChildAt(0);
+            return img.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState();
+        }
+        return false;
     }
 
 
@@ -450,7 +462,7 @@ public class Game extends Fragment implements View.OnClickListener {
                 }
             } else {
                 // מחוץ ללוח, בדוק אם ניתן להוציא
-                if (canTakeOut(layouts, i, iLEat, (turn.equals("white")) ? selected + i : selected - i)) {
+                if (canTakeOut(layouts, i, iLEat, rndCube1) || canTakeOut(layouts, i, iLEat, rndCube2)) {
                     canMove[i] = true; // אפשרות להוציא
                     layouts[i].setBackgroundColor(Colors.GREEN.get());
                     btnTakeOut.setVisibility(View.VISIBLE);
@@ -587,7 +599,6 @@ public class Game extends Fragment implements View.OnClickListener {
         }
 
         // אם הגענו לכאן - אין מהלכים חוקיים
-        Toast.makeText(getContext(), "אין מהלכים חוקיים - התור עובר", Toast.LENGTH_SHORT).show();
         forceEndTurn();
         return true;
     }
@@ -625,13 +636,16 @@ public class Game extends Fragment implements View.OnClickListener {
 
     private void deleteCube(int selected, int j, String turn) {
         int distance;
-        if (selected == -1) {
+        if (selected == -1) { // כניסה מאכול
             distance = (turn.equals("white")) ? (24 - j) : (j + 1);
-        } else {
+        } else if (j < 0 || j > 23) { // הוצאה מהלוח (Take Out)
+            distance = (turn.equals("white")) ? (selected + 1) : (24 - selected);
+        } else { // תנועה רגילה
             distance = (turn.equals("white")) ? (selected - j) : (j - selected);
         }
 
         if (rndCube1 == rndCube2) {
+            // במידה וכפולים (דאבל), מורידים קובייה אחת כל פעם
             if (imgC4.getVisibility() == View.VISIBLE) imgC4.setVisibility(View.INVISIBLE);
             else if (imgC3.getVisibility() == View.VISIBLE) imgC3.setVisibility(View.INVISIBLE);
             else if (imgC2.getVisibility() == View.VISIBLE) imgC2.setVisibility(View.INVISIBLE);
@@ -641,12 +655,24 @@ public class Game extends Fragment implements View.OnClickListener {
                 rndCube2 = 0;
             }
         } else {
-            if (distance == rndCube1) {
-                imgC1.setVisibility(View.INVISIBLE);
-                rndCube1 = 0;
-            } else if (distance == rndCube2) {
-                imgC2.setVisibility(View.INVISIBLE);
-                rndCube2 = 0;
+            // במידה וזו הוצאה מהלוח, ייתכן והקובייה גדולה מהמרחק
+            if (j < 0 || j > 23) {
+                if (rndCube1 >= distance) {
+                    imgC1.setVisibility(View.INVISIBLE);
+                    rndCube1 = 0;
+                } else if (rndCube2 >= distance) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
+            } else {
+                // תנועה רגילה - חייב מרחק מדויק
+                if (distance == rndCube1) {
+                    imgC1.setVisibility(View.INVISIBLE);
+                    rndCube1 = 0;
+                } else if (distance == rndCube2) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
             }
         }
     }
@@ -713,6 +739,7 @@ public class Game extends Fragment implements View.OnClickListener {
         }
         for (int m = 0; m < 24; m++) {
             if (layouts[m].getId() == view.getId() && canMove[m]) {
+                btnTakeOut.setVisibility(View.INVISIBLE);
                 if (selected == -1) {
                     moveEatGreen(layouts, m, canMove, iLEat, eatIndex, turn);
                 } else {
@@ -746,6 +773,7 @@ public class Game extends Fragment implements View.OnClickListener {
                             layouts[k].setClickable(false);
                         }
                         if (iLEat.getId() == view.getId()) {
+                            btnTakeOut.setVisibility(View.INVISIBLE);
                             eatIndex = j;
                             if (rndCube1 != 0) {
                                 paintLinear(selectLinear(rndCube1, -1, turn), layouts, -1, canMove, iLEat, eatIndex, turn);
@@ -763,6 +791,7 @@ public class Game extends Fragment implements View.OnClickListener {
                 ImageView imgColor = (ImageView) (layouts[i].getChildAt(0));
                 int resId = getResources().getIdentifier((turn + "_solider"), "drawable", requireContext().getPackageName());
                 if (layouts[i].getId() == view.getId()) {
+                    btnTakeOut.setVisibility(View.INVISIBLE);
                     if (imgColor != null) {
                         if (imgColor.getDrawable().getConstantState() == ContextCompat.getDrawable(requireContext(), resId).getConstantState()) {
                             paintLinear(selectLinear(rndCube1, i, turn), layouts, i, canMove, iLEat, eatIndex, turn);

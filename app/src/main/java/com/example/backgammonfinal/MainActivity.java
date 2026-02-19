@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imgBack;
     private EditText editdUsername, editDEmail, editDPassword;
     private Button btnDlogin,btnDRegister;
-    private TextView tvUserName,tvDMessage,btnNewAccount;
+    private TextView tvUserName,tvDMessage,btnNewAccount,btnBackToLogin;
     // broadcast reciver
     private boolean isFirstTime;
     // **** SQLite database
@@ -64,14 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvUserName.setText(" Wellcome " + this.savedUsername + "! ");
             this.btnRegister.setText("Sign in");
         }
-//        btnMusic = (Button) findViewById(R.id.btnMusic);
-//        btnMusic.setOnClickListener(this);
+
         btnScoreList = (Button) findViewById(R.id.btnScoreList);
         btnScoreList.setOnClickListener(this);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
-//        imgBack = (ImageView) findViewById(R.id.imgBack);
-//        imgBack.setOnClickListener(this);
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 createRegistrationDialog();
             }
         });
-        tvDMessage.setVisibility(View.INVISIBLE);
+        //tvDMessage.setVisibility(View.INVISIBLE);
         editdUsername = (EditText) dialog.findViewById(R.id.edUsername);
         editDPassword = (EditText) dialog.findViewById(R.id.edPassword);
         btnDlogin = (Button) dialog.findViewById(R.id.btnLogin);
@@ -172,14 +172,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialog.show();
+        if (dialog.getWindow() != null) {
+            // הופך את המסגרת המקורית של הדיאלוג לשקופה
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            //מגדיר שהדיאלוג יתפוס כמעט את כל רוחב המסך
+           dialog.getWindow().setLayout(
+                    (int) (320 * getResources().getDisplayMetrics().density), // רוחב של 300dp
+                    ViewGroup.LayoutParams.WRAP_CONTENT // גובה אוטומטי בהתאם לתוכן
+            );
+        }
     }
     public void createRegistrationDialog() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.signin);
         dialog.setTitle("Registration");
         dialog.setCancelable(true);
+        btnBackToLogin = (TextView) dialog.findViewById(R.id.btnBackToLogin);
+        btnBackToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                createLoginDialog();
+            }
+        });
         tvDMessage = (TextView) dialog.findViewById(R.id.tvSignin);
-        tvDMessage.setVisibility(View.INVISIBLE);
+        //tvDMessage.setVisibility(View.INVISIBLE);
         editdUsername = (EditText) dialog.findViewById(R.id.edUsername);
         editDPassword = (EditText) dialog.findViewById(R.id.edPassword);
         editDEmail = (EditText) dialog.findViewById(R.id.edEmail);
@@ -223,5 +241,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialog.show();
+        if (dialog.getWindow() != null) {
+            // הופך את המסגרת המקורית של הדיאלוג לשקופה
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            //מגדיר שהדיאלוג יתפוס כמעט את כל רוחב המסך
+            dialog.getWindow().setLayout(
+                    (int) (320 * getResources().getDisplayMetrics().density), // רוחב של 300dp
+                    ViewGroup.LayoutParams.WRAP_CONTENT // גובה אוטומטי בהתאם לתוכן
+            );
+        }
     }
 }

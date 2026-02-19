@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Role">
+    android:background="#2E1B10"
+    android:padding="8dp">
 
-
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="כל אחד בתורו מטיל קוביות והולך לפי המספר שיצא בכל קובייה אפשר עם חייל אחד ואפשר עם יותר מותר ללכת רק למקום פנוי או למקום בו יש לך כבר חיילים ואם יש לשחקן השני רק חייל אחד באותו מקום אתה 'אוכל' את החייל של אותו שחקן" />
+        app:cardBackgroundColor="#3E2723"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Language / שפה"
+                android:textColor="#A68966"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/languageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/spinner_bg"
+                android:padding="10dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#FFD700"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/transfermove"
+                android:scaleType="centerInside" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tvRules"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#F5F5DC"
+                    android:textSize="20sp"
+                    android:lineSpacingExtra="6dp" />
+            </ScrollView>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>
