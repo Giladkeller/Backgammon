@@ -8,16 +8,45 @@
     android:background="#2E1B10"
     tools:context=".GameActivity">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imgBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            app:srcCompat="@drawable/backicon"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/btnMainMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#3E2723"
+            android:text="To Main Menu"
+            android:textColor="#F5F5DC"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:clickable="false"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/tab_card" />
+        android:layout_above="@id/tab_card"
+        android:layout_below="@id/top_bar" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/tab_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         app:cardBackgroundColor="#3E2723"
         app:cardCornerRadius="0dp"
@@ -26,18 +55,16 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:background="#3E2723"
+            app:tabGravity="fill"
             app:tabIndicatorColor="#FFD700"
-            app:tabIndicatorHeight="4dp"
             app:tabIndicatorGravity="top"
-            app:tabSelectedTextColor="#FFD700"
-            app:tabTextAppearance="@style/CustomTabTextAppearance"
-            app:tabTextColor="#A68966"
-            app:tabRippleColor="#5D4037"
+            app:tabIndicatorHeight="4dp"
             app:tabMode="fixed"
-            app:tabGravity="fill" />
-
+            app:tabRippleColor="#5D4037"
+            app:tabSelectedTextColor="#FFD700"
+            app:tabTextColor="#A68966" />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

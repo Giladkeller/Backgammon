@@ -93,6 +93,7 @@
         android:backgroundTint="#A68966"
         android:text="Back To Main Menu"
         android:textColor="#2E1B10"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
 </LinearLayout>

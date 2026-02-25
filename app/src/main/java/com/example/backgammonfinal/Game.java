@@ -4,6 +4,8 @@ import java.util.Random;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
  * create an instance of this fragment.
  */
 import android.graphics.Color;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,10 @@ import java.util.Map;
 public class Game extends Fragment implements View.OnClickListener {
 
 
+    private AlertDialog.Builder builder;
+
+    Intent intent;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LinearLayout[] layouts;
 
@@ -48,6 +55,9 @@ public class Game extends Fragment implements View.OnClickListener {
     private ImageView imgCubes, imgC1, imgC2, imgC3, imgC4;
     private Random rnd = new Random();
     private int rndCube1, rndCube2;
+
+    private TextView tvPlayerW;
+    private TextView tvPlayerB;
 
     private Button restart, btnTakeOut;
 
@@ -102,6 +112,14 @@ public class Game extends Fragment implements View.OnClickListener {
         });
 
         setupStartingPosition();
+
+        tvPlayerW = (TextView) v.findViewById(R.id.tvPlayerW);
+        tvPlayerB = (TextView) v.findViewById(R.id.tvPlayerB);
+
+        if (getArguments() != null){
+            tvPlayerW.setText(getArguments().getString("p1"," "));
+            tvPlayerB.setText(getArguments().getString("p2"," "));
+        }
 
         return v;
 
@@ -301,14 +319,40 @@ public class Game extends Fragment implements View.OnClickListener {
         if (lOutWhite.getChildCount() == 15) {
             int points = calculatePoints("white", "brown");
             String type = getWinType(points);
-            Toast.makeText(getContext(), "הלבן ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
-            updateLeaderboard("white", points);
+            //Toast.makeText(getContext(), "הלבן ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
+            builder = new AlertDialog.Builder(requireContext());
+            builder.setTitle("GAME OVER");
+            builder.setMessage("הלבן ניצח " + type + "! (" + points + " נקודות)");
+            builder.setPositiveButton("new game", (dialog, which) -> {
+                dialog.dismiss();
+                restartGame();
+            });
+            builder.setNegativeButton("Main Menu", (dialog, which) -> {
+                dialog.dismiss();
+                intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+            });
+            builder.show();
+            updateLeaderboard(getArguments().getString("p1"," "), points);
             forceEndTurn();
         } else if (lOutBrown.getChildCount() == 15) {
             int points = calculatePoints("brown", "white");
             String type = getWinType(points);
-            Toast.makeText(getContext(), "החום ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
-            updateLeaderboard("brown", points);
+            //Toast.makeText(getContext(), "החום ניצח " + type + "! (" + points + " נקודות)", Toast.LENGTH_LONG).show();
+            builder = new AlertDialog.Builder(requireContext());
+            builder.setTitle("GAME OVER");
+            builder.setMessage("החום ניצח " + type + "! (" + points + " נקודות)");
+            builder.setPositiveButton("new game", (dialog, which) -> {
+                dialog.dismiss();
+                restartGame();
+            });
+            builder.setNegativeButton("Main Menu", (dialog, which) -> {
+                dialog.dismiss();
+                intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+            });
+            builder.show();
+            updateLeaderboard(getArguments().getString("p2"," "), points);
             forceEndTurn();
         }
     }
@@ -360,17 +404,17 @@ public class Game extends Fragment implements View.OnClickListener {
         return 2;
     }
 
-    private void updateLeaderboard(String winnerColor, int pointsToAdd) {
-        if (winnerColor == null || winnerColor.isEmpty()) return;
+    private void updateLeaderboard(String winnerName, int pointsToAdd) {
+        if (winnerName == null || winnerName.isEmpty()) return;
 
         // 1. נרמול ה-ID: הופך את " Red" ל-"red" כדי למנוע כפילויות במסד הנתונים
-        String documentId = winnerColor.trim().toLowerCase();
+        String documentId = winnerName.trim().toLowerCase();
 
         // 2. הכנת הנתונים לעדכון
         Map<String, Object> data = new HashMap<>();
 
         // שומרים את השם המקורי (למשל "Red") בשדה נפרד לצורך תצוגה יפה
-        data.put("username", winnerColor.trim());
+        data.put("username", winnerName.trim());
 
         // שימוש ב-increment מבטיח חישוב אטומי בצד השרת (מונע התנגשויות)
         data.put("points", FieldValue.increment(pointsToAdd));
@@ -379,7 +423,6 @@ public class Game extends Fragment implements View.OnClickListener {
         data.put("timestamp", FieldValue.serverTimestamp());
 
         // 3. ביצוע העדכון עם SetOptions.merge()
-        // אם המסמך לא קיים - הוא ייוצר. אם הוא קיים - רק השדות האלו יתעדכנו/יתווספו.
         db.collection("leaderboard").document(documentId)
                 .set(data, com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
@@ -387,7 +430,7 @@ public class Game extends Fragment implements View.OnClickListener {
                     if (getContext() != null) {
                         if (isAdded() && getContext() != null) {
                             Toast.makeText(getContext(),
-                                    "נוספו " + pointsToAdd + " נקודות ל-" + winnerColor.trim() + "!",
+                                    "נוספו " + pointsToAdd + " נקודות ל-" + winnerName.trim() + "!",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -645,7 +688,7 @@ public class Game extends Fragment implements View.OnClickListener {
         }
 
         if (rndCube1 == rndCube2) {
-            // במידה וכפולים (דאבל), מורידים קובייה אחת כל פעם
+            // במידה וכפולים (דאבל) - הלוגיקה נשארת זהה
             if (imgC4.getVisibility() == View.VISIBLE) imgC4.setVisibility(View.INVISIBLE);
             else if (imgC3.getVisibility() == View.VISIBLE) imgC3.setVisibility(View.INVISIBLE);
             else if (imgC2.getVisibility() == View.VISIBLE) imgC2.setVisibility(View.INVISIBLE);
@@ -655,12 +698,20 @@ public class Game extends Fragment implements View.OnClickListener {
                 rndCube2 = 0;
             }
         } else {
-            // במידה וזו הוצאה מהלוח, ייתכן והקובייה גדולה מהמרחק
-            if (j < 0 || j > 23) {
-                if (rndCube1 >= distance) {
+            if (j < 0 || j > 23) { // הוצאה מהלוח
+                // 1. בדיקה אם יש קובייה ששווה בדיוק למרחק (למשל חייל ב-5 וקובייה 5)
+                if (rndCube1 == distance) {
                     imgC1.setVisibility(View.INVISIBLE);
                     rndCube1 = 0;
-                } else if (rndCube2 >= distance) {
+                } else if (rndCube2 == distance) {
+                    imgC2.setVisibility(View.INVISIBLE);
+                    rndCube2 = 0;
+                }
+                // 2. רק אם אין קובייה מדויקת, משתמשים בקובייה גדולה יותר (למשל חייל ב-5 וקובייה 6)
+                else if (rndCube1 > distance) {
+                    imgC1.setVisibility(View.INVISIBLE);
+                    rndCube1 = 0;
+                } else if (rndCube2 > distance) {
                     imgC2.setVisibility(View.INVISIBLE);
                     rndCube2 = 0;
                 }

@@ -7,208 +7,317 @@
     android:background="#4E342E"
     tools:context=".Game">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#2E1B10"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#3E2723"
-            android:elevation="4dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvPlayer1"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="White Player"
-                    android:textColor="#F5F5DC"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#3E2723"
+                android:elevation="4dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/lOutW"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:orientation="horizontal" />
-            </LinearLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="10dp"
-                android:background="#A68966" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:text="White Player"
+                        android:textColor="#F5F5DC"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvPlayerW"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:text="Brown Player"
+                        android:textColor="#F5F5DC"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvPlayer2"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:text="Brown Player"
-                    android:textColor="#D7CCC8"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/lOutW"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="10dp"
+                    android:background="#A68966" />
 
                 <LinearLayout
-                    android:id="@+id/lOutB"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:orientation="horizontal" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:gravity="center"
+                        android:text="Brown Player"
+                        android:textColor="#9E3D19"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPlayerB"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:text="Brown Player"
+                        android:textColor="#9E3D19"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/lOutB"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/mainGrid"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/backgammonboard"
-            android:elevation="6dp"
-            app:columnCount="15"
-            app:rowCount="3">
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/mainGrid"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/backgammonboard"
+                android:elevation="6dp"
+                app:columnCount="15"
+                app:rowCount="3">
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.4" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.4" />
 
-            <LinearLayout android:id="@+id/lL12" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL11" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL10" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL9" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL8" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL7" style="@style/PointTop" />
+                <LinearLayout
+                    android:id="@+id/lL12"
+                    style="@style/PointTop" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.8" />
+                <LinearLayout
+                    android:id="@+id/lL11"
+                    style="@style/PointTop" />
 
-            <LinearLayout android:id="@+id/lL6" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL5" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL4" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL3" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL2" style="@style/PointTop" />
-            <LinearLayout android:id="@+id/lL1" style="@style/PointTop" />
+                <LinearLayout
+                    android:id="@+id/lL10"
+                    style="@style/PointTop" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.4" />
+                <LinearLayout
+                    android:id="@+id/lL9"
+                    style="@style/PointTop" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                app:layout_columnSpan="7"
-                app:layout_columnWeight="6.4" />
+                <LinearLayout
+                    android:id="@+id/lL8"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL7"
+                    style="@style/PointTop" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.8" />
+
+                <LinearLayout
+                    android:id="@+id/lL6"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL5"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL4"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL3"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL2"
+                    style="@style/PointTop" />
+
+                <LinearLayout
+                    android:id="@+id/lL1"
+                    style="@style/PointTop" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.4" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_columnSpan="7"
+                    app:layout_columnWeight="6.4" />
+
+                <LinearLayout
+                    android:id="@+id/iLEat"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_columnWeight="0.8" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_columnSpan="7"
+                    app:layout_columnWeight="6.4" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.4" />
+
+                <LinearLayout
+                    android:id="@+id/lL13"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL14"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL15"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL16"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL17"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL18"
+                    style="@style/PointBottom" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.8" />
+
+                <LinearLayout
+                    android:id="@+id/lL19"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL20"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL21"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL22"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL23"
+                    style="@style/PointBottom" />
+
+                <LinearLayout
+                    android:id="@+id/lL24"
+                    style="@style/PointBottom" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    app:layout_columnWeight="0.4" />
+
+            </androidx.gridlayout.widget.GridLayout>
 
             <LinearLayout
-                android:id="@+id/iLEat"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/imgCubes"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/cubes" />
+
+                <Button
+                    android:id="@+id/btnRestart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#8D6E63"
+                    android:text="Restart Game"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btnTakeOut"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#4CAF50"
+                    android:text="Out"
+                    android:textSize="10sp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal">
 
-                app:layout_columnWeight="0.8" />
+                <ImageView
+                    android:id="@+id/imgC1"
+                    style="@style/CubeStyle"
+                    android:layout_margin="4dp" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                app:layout_columnSpan="7"
-                app:layout_columnWeight="6.4" />
+                <ImageView
+                    android:id="@+id/imgC2"
+                    style="@style/CubeStyle"
+                    android:layout_margin="4dp" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.4" />
+                <ImageView
+                    android:id="@+id/imgC3"
+                    style="@style/CubeStyle"
+                    android:layout_margin="4dp" />
 
-            <LinearLayout android:id="@+id/lL13" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL14" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL15" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL16" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL17" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL18" style="@style/PointBottom" />
+                <ImageView
+                    android:id="@+id/imgC4"
+                    style="@style/CubeStyle"
+                    android:layout_margin="4dp" />
+            </LinearLayout>
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.8" />
-
-            <LinearLayout android:id="@+id/lL19" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL20" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL21" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL22" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL23" style="@style/PointBottom" />
-            <LinearLayout android:id="@+id/lL24" style="@style/PointBottom" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="160dp"
-                app:layout_columnWeight="0.4" />
-
-        </androidx.gridlayout.widget.GridLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/imgCubes"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/cubes" />
-
-            <Button
-                android:id="@+id/btnRestart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_weight="1"
-                android:backgroundTint="#8D6E63"
-                android:text="Restart Game"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/btnTakeOut"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#4CAF50"
-                android:text="Out"
-                android:textSize="10sp"
-                android:visibility="invisible" />
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView android:id="@+id/imgC1" style="@style/CubeStyle" android:layout_margin="4dp"/>
-            <ImageView android:id="@+id/imgC2" style="@style/CubeStyle" android:layout_margin="4dp"/>
-            <ImageView android:id="@+id/imgC3" style="@style/CubeStyle" android:layout_margin="4dp"/>
-            <ImageView android:id="@+id/imgC4" style="@style/CubeStyle" android:layout_margin="4dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
 </FrameLayout>

@@ -87,6 +87,30 @@
                 app:strokeWidth="1dp" />
 
             <Button
+                android:id="@+id/btnGuset"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#5D4037"
+                android:text="Guest Mode"
+                android:textColor="#FFD700"
+                app:cornerRadius="10dp"
+                app:strokeColor="#FFD700"
+                app:strokeWidth="1dp" />
+
+            <Button
+                android:id="@+id/btnMusic"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#5D4037"
+                android:text="Music"
+                android:textColor="#FFD700"
+                app:cornerRadius="10dp"
+                app:strokeColor="#FFD700"
+                app:strokeWidth="1dp" />
+
+            <Button
                 android:id="@+id/btnExit"
                 android:layout_width="200dp"
                 android:layout_height="60dp"

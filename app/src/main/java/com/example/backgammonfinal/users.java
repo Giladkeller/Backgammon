@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -56,6 +57,12 @@ public class users extends AppCompatActivity implements View.OnClickListener {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
         });
 
         editPlayer1 = (EditText) findViewById(R.id.edPlayer1);
@@ -124,7 +131,7 @@ public class users extends AppCompatActivity implements View.OnClickListener {
             finish();
         }
         if (v.getId() == imgPlay.getId()){
-            if (p2.getText().toString().isEmpty()){
+            if (p2.getText().toString().isEmpty() || p1.getText().toString().isEmpty()){
                 builder = new AlertDialog.Builder(users.this);
                 builder.setTitle("Error");
                 builder.setMessage("UserName Null");
@@ -135,6 +142,9 @@ public class users extends AppCompatActivity implements View.OnClickListener {
             }
             else {
                 intent = new Intent(users.this, GameActivity.class);
+                // העברת השמות
+                intent.putExtra("p1", p1.getText().toString());
+                intent.putExtra("p2", p2.getText().toString());
                 startActivity(intent);
                 finish();
             }

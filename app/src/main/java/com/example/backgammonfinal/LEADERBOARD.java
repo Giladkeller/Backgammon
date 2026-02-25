@@ -23,7 +23,6 @@ import com.google.firebase.firestore.Query;
 public class LEADERBOARD extends Fragment {
 
     private RecyclerView recyclerView;
-
     private Button btnBack;
     private FirestoreRecyclerAdapter adapter;
 
@@ -35,7 +34,13 @@ public class LEADERBOARD extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewLeaderboard);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        btnBack = (Button) view.findViewById(R.id.btnBackToGame); // וודא שיש לך כפתור כזה ב-XML
+        btnBack = (Button) view.findViewById(R.id.btnBackToGame);
+        if (getArguments() != null) {
+            boolean shouldHide = getArguments().getBoolean("btnBackToGame", false);
+            if (shouldHide) {
+                btnBack.setVisibility(View.VISIBLE);
+            }
+        }
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,31 +55,35 @@ public class LEADERBOARD extends Fragment {
     }
 
     private void setupLeaderboardQuery() {
-        // 1. הגדרת השאילתה לשליפת המובילים לפי ניקוד
+        //  הגדרת השאילתה לשליפת המובילים לפי ניקוד
         Query query = FirebaseFirestore.getInstance()
                 .collection("leaderboard")
                 .orderBy("points", Query.Direction.DESCENDING);
 
-        // 2. הגדרת האופציות לאדפטר
+        //  הגדרת האופציות לאדפטר
         FirestoreRecyclerOptions<Player> options = new FirestoreRecyclerOptions.Builder<Player>()
                 .setQuery(query, Player.class)
                 .build();
 
-        // 3. יצירת האדפטר (איך להציג כל נתון בתוך ה-XML)
+        //  יצירת האדפטר (איך להציג כל נתון בתוך ה-XML)
         adapter = new FirestoreRecyclerAdapter<Player, PlayerViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PlayerViewHolder holder, int position, @NonNull Player model) {
-                // 1. הגדרת הטקסט
+                //  חישוב הדירוג (Rank)
+                int displayRank = calculateRank(position, model.getPoints()); // ברירת מחדל
+
+
+                //  הגדרת הטקסט
                 holder.username.setText(model.getUsername());
                 holder.points.setText(String.valueOf(model.getPoints()));
 
-                // 2. יצירת מסגרת אליפטית דינמית (Background)
+                //  יצירת מסגרת אליפטית דינמית (Background)
                 GradientDrawable shape = new GradientDrawable();
                 shape.setShape(GradientDrawable.RECTANGLE);
                 shape.setCornerRadius(100f); // ערך גבוה יוצר מראה אליפטי/מעוגל מאוד
                 shape.setStroke(3, Color.parseColor("#808080")); // עובי מסגרת וצבע אפור
 
-                // 3. הגדרת רווח בין השורות (Margins) והגדלת הגובה
+                //  הגדרת רווח בין השורות (Margins) והגדלת הגובה
                 // שים לב: השתמש ב-LayoutParams שמתאים למה שעוטף את ה-item_player (כנראה RecyclerView.LayoutParams)
                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
                 layoutParams.setMargins(20, 10, 20, 30); // שמאל, למעלה, ימין, למטה (ה-30 יוצר את הרווח)
@@ -83,32 +92,52 @@ public class LEADERBOARD extends Fragment {
                 // הגדרת גובה פנימי (Padding) כדי להגדיל את השורה
                 holder.itemView.setPadding(40, 40, 40, 40);
 
-                // 4. לוגיקת צבעים לפי מיקום
-                switch (position) {
-                    case 0: // זהב
+                //  לוגיקת צבעים ואימוג'י לפי הדירוג המחושב (displayRank)
+                switch (displayRank) {
+                    case 1: // מקום ראשון
                         shape.setColor(Color.parseColor("#FFD700"));
                         holder.username.setText("👑 " + model.getUsername());
-                        holder.username.setTextSize(22); // הגדלת פונט למקום ראשון
+                        holder.username.setTextSize(22);
                         break;
-                    case 1: // כסף
+                    case 2: // מקום שני
                         shape.setColor(Color.parseColor("#C0C0C0"));
                         holder.username.setText("🥈 " + model.getUsername());
                         holder.username.setTextSize(20);
                         break;
-                    case 2: // ארד
+                    case 3: // מקום שלישי
                         shape.setColor(Color.parseColor("#CD7F32"));
                         holder.username.setText("🥉 " + model.getUsername());
                         holder.username.setTextSize(18);
                         break;
-                    default: // שאר השורות
+                    default: // כל השאר
                         shape.setColor(Color.WHITE);
-                        holder.username.setText(" " + (position + 1) + "  " + model.getUsername());
+                        holder.username.setText(" " + displayRank + ". " + model.getUsername());
                         holder.username.setTextSize(16);
                         break;
                 }
 
-                // החלת העיצוב על השורה
                 holder.itemView.setBackground(shape);
+            }
+
+            private int calculateRank(int currentPos, long currentPoints) {
+                if (currentPos == 0) return 1;
+
+                int rank = 1;
+                long lastPoints = getItem(0).getPoints();
+
+                for (int i = 1; i <= currentPos; i++) {
+                    long currentItemPoints = getItem(i).getPoints();
+                    // אם הניקוד הנוכחי קטן מהניקוד הקודם שראינו, סימן שירדנו דרגה בדירוג
+                    if (currentItemPoints < lastPoints) {
+                        rank++;
+                        lastPoints = currentItemPoints;
+                    }
+                    // אם הגענו למיקום שלנו, מחזירים את הדירוג שנצבר
+                    if (i == currentPos) {
+                        return rank;
+                    }
+                }
+                return rank;
             }
 
             @NonNull

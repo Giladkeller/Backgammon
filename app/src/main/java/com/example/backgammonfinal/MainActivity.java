@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isFirstTime;
     // **** SQLite database
     public  DatabaseHelper dbHelper;
-    private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList;
+    private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList, btnGuest;
     //SharedPreferences save user name in this phone
     private SharedPreferences sharedPreferences;
     private String savedUsername;
@@ -68,10 +69,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.btnRegister.setText("Sign in");
         }
 
+        btnGuest = (Button) findViewById(R.id.btnGuset);
+        btnGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(MainActivity.this, users.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnMusic = (Button) findViewById(R.id.btnMusic);
+        btnMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(MainActivity.this, MusicActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         btnScoreList = (Button) findViewById(R.id.btnScoreList);
         btnScoreList.setOnClickListener(this);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(this);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -96,17 +121,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             createLoginDialog();
         }
         if (v.getId() == btnScoreList.getId()) {
-            //findViewById(R.id.main_menu_layout).setVisibility(View.GONE); // הסתרת התפריט
             findViewById(R.id.main_container).setVisibility(View.VISIBLE);
-            // החלפת התוכן של ה-Activity בפרגמנט
+
+            // 1. יצירת האובייקט
+            LEADERBOARD leaderboardFragment = new LEADERBOARD();
+
+            // 2. יצירת Bundle והעברת נתון (למשל: האם להסתיר כפתור)
+            Bundle args = new Bundle();
+            args.putBoolean("btnBackToGame", true); // שלח "אמת" אם תרצה להסתיר
+            leaderboardFragment.setArguments(args);
+
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(
-                            R.anim.slide_up,    // 1. כניסה של הפרגמנט החדש
-                            0,                  // 2. יציאה של התפריט (אנחנו לא מוציאים אותו, אז 0)
-                            0,                  // 3. כניסה של התפריט כשחוזרים אליו
-                            R.anim.slide_down   // 4. יציאה של הפרגמנט (ה-Leaderboard) למטה
-                    )
-                    .replace(R.id.main_container, new LEADERBOARD())
+                    .setCustomAnimations(R.anim.slide_up, 0, 0, R.anim.slide_down)
+                    .replace(R.id.main_container, leaderboardFragment) // שים לב שהעברנו את האובייקט שיצרנו
                     .addToBackStack(null)
                     .commit();
         }
@@ -165,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent = new Intent(MainActivity.this, users.class);
                     intent.putExtra("USERNAME", username);
                     startActivity(intent);
+                    finish();
 // Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Login failed please sign in first");
@@ -234,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent = new Intent(MainActivity.this, users.class);
                     intent.putExtra("USERNAME", username);
                     startActivity(intent);
+                    finish();
 // Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Registration failed user/main exist");
