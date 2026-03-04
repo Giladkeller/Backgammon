@@ -22,28 +22,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BackGammonFinal">
         <service
-            android:name=".MusicService"
+            android:name=".Music.MusicService"
             android:foregroundServiceType="mediaPlayback"
             android:enabled="true"
             android:exported="false" />
         <activity
-            android:name=".MusicActivity"
+            android:name=".Music.MusicActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".StartActivities.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".users"
+            android:name=".Users.users"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GameActivity"
+            android:name=".Game.GameActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".OpenActivity"
+            android:name=".StartActivities.OpenActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

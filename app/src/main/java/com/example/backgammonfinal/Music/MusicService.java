@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Music;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,6 +13,8 @@ import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
+
+import com.example.backgammonfinal.R;
 
 public class MusicService extends Service {
     private MediaPlayer mediaPlayer;
@@ -99,7 +101,6 @@ public class MusicService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(title)
                 .setContentText("שש-בש מוזיקה")
-                // setOngoing(true) מונע החלקה כשהשיר מתנגן. כשהוא false, אפשר להעלים.
                 .setOngoing(isPlaying())
                 .setContentIntent(pendingIntent)
                 .addAction(new NotificationCompat.Action(icon, isPlaying() ? "Pause" : "Play", playPausePending))

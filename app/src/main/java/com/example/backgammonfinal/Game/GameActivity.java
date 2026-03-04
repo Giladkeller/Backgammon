@@ -1,8 +1,7 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Game;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +12,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.backgammonfinal.StartActivities.MainActivity;
+import com.example.backgammonfinal.Users.MainPagerAdapter;
+import com.example.backgammonfinal.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

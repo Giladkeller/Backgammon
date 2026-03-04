@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2E1B10"
-    tools:context=".GameActivity">
+    tools:context=".Game.GameActivity">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/top_bar"

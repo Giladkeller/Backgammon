@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.StartActivities;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
+
+import com.example.backgammonfinal.DataBaseAndFireBase.DatabaseHelper;
+import com.example.backgammonfinal.Game.LEADERBOARD;
+import com.example.backgammonfinal.Music.MusicActivity;
+import com.example.backgammonfinal.R;
+import com.example.backgammonfinal.Users.users;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // broadcast reciver
     private boolean isFirstTime;
     // **** SQLite database
-    public  DatabaseHelper dbHelper;
+    public DatabaseHelper dbHelper;
     private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList, btnGuest;
     //SharedPreferences save user name in this phone
     private SharedPreferences sharedPreferences;
@@ -282,3 +285,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
+

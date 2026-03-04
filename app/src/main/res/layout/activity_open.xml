@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4E342E"
-    tools:context=".OpenActivity">
+    tools:context=".StartActivities.OpenActivity">
 
     <TextView
         android:id="@+id/textView"

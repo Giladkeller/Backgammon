@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Game;
 
 import java.util.Random;
 
@@ -31,6 +31,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.backgammonfinal.StartActivities.MainActivity;
+import com.example.backgammonfinal.R;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -877,3 +879,5 @@ public class Game extends Fragment implements View.OnClickListener {
     }
 
 }
+
+

@@ -1,16 +1,14 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.StartActivities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,12 +19,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.backgammonfinal.DataBaseAndFireBase.DatabaseHelper;
+import com.example.backgammonfinal.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class OpenActivity extends AppCompatActivity {
     // **** SQLite database
-    public  DatabaseHelper dbHelper;
+    public DatabaseHelper dbHelper;
     private Button btnLogin,btnRegister, btnMusic, btnExit, btnScoreList;
     //SharedPreferences save user name in this phone
     private SharedPreferences sharedPreferences;
@@ -166,3 +166,4 @@ public class OpenActivity extends AppCompatActivity {
         loginDialog.show();
     }
 }
+

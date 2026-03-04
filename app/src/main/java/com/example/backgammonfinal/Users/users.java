@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Users;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.backgammonfinal.Game.GameActivity;
+import com.example.backgammonfinal.StartActivities.MainActivity;
+import com.example.backgammonfinal.R;
 
 import java.util.Locale;
 

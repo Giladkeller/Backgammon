@@ -1,10 +1,14 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Users;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.backgammonfinal.Game.Game;
+import com.example.backgammonfinal.Game.LEADERBOARD;
+import com.example.backgammonfinal.Game.Role;
 
 public class MainPagerAdapter extends FragmentStateAdapter {
 

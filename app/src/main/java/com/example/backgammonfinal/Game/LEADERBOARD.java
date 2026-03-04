@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Game;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.backgammonfinal.DataBaseAndFireBase.Player;
+import com.example.backgammonfinal.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;

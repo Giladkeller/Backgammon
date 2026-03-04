@@ -1,4 +1,4 @@
-package com.example.backgammonfinal;
+package com.example.backgammonfinal.Music;
 
 import android.Manifest;
 import android.content.ComponentName;
@@ -22,6 +22,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.backgammonfinal.StartActivities.MainActivity;
+import com.example.backgammonfinal.R;
 
 public class MusicActivity extends AppCompatActivity {
 
