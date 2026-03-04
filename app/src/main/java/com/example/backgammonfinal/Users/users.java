@@ -43,6 +43,8 @@ public class users extends AppCompatActivity implements View.OnClickListener {
     private ImageView contact1, contact2;
     private EditText p1, p2;
 
+    private String name1, name2;
+
     private TextToSpeech textToSpeech;
     //for content provider
     private ActivityResultLauncher<Intent> contentLauncher;
@@ -135,6 +137,10 @@ public class users extends AppCompatActivity implements View.OnClickListener {
             finish();
         }
         if (v.getId() == imgPlay.getId()){
+
+            name1 = p1.getText().toString();
+            name2 = p2.getText().toString();
+
             if (p2.getText().toString().isEmpty() || p1.getText().toString().isEmpty()){
                 builder = new AlertDialog.Builder(users.this);
                 builder.setTitle("Error");
@@ -145,6 +151,14 @@ public class users extends AppCompatActivity implements View.OnClickListener {
                 builder.show();
             }
             else {
+                // הכנת המשפט להקראה
+                String welcomeMessage = "Starting game between " + name1 + " and " + name2;
+                textToSpeech.setSpeechRate(0.6f);
+                textToSpeech.setLanguage(Locale.US);
+                textToSpeech.setPitch(0.9f);
+                // TextToSpeech.QUEUE_FLUSH מנקה הודעות קודמות ומשמיע את זו מיד
+                textToSpeech.speak(welcomeMessage, TextToSpeech.QUEUE_FLUSH, null, "welcomeMessageId");
+
                 intent = new Intent(users.this, GameActivity.class);
                 // העברת השמות
                 intent.putExtra("p1", p1.getText().toString());
