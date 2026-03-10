@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.Query;
 public class LEADERBOARD extends Fragment {
 
     private RecyclerView recyclerView;
+
+    private ProgressBar progressBar;
     private Button btnBack;
     private FirestoreRecyclerAdapter adapter;
 
@@ -34,7 +37,9 @@ public class LEADERBOARD extends Fragment {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLeaderboard);
+        progressBar = view.findViewById(R.id.progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(false);
 
         btnBack = (Button) view.findViewById(R.id.btnBackToGame);
         if (getArguments() != null) {
@@ -65,15 +70,27 @@ public class LEADERBOARD extends Fragment {
         //  הגדרת האופציות לאדפטר
         FirestoreRecyclerOptions<Player> options = new FirestoreRecyclerOptions.Builder<Player>()
                 .setQuery(query, Player.class)
+                .setLifecycleOwner(this) // חיבור למחזור החיים של הפרגמנט - קריטי לעדכון חי!
                 .build();
 
         //  יצירת האדפטר (איך להציג כל נתון בתוך ה-XML)
         adapter = new FirestoreRecyclerAdapter<Player, PlayerViewHolder>(options) {
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                // ברגע שהנתונים נטענו (אפילו אם הרשימה ריקה), נעלים את פס הטעינה
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                recyclerView.post(() -> notifyDataSetChanged());
+            }
+
             @Override
             protected void onBindViewHolder(@NonNull PlayerViewHolder holder, int position, @NonNull Player model) {
                 //  חישוב הדירוג (Rank)
                 int displayRank = calculateRank(position, model.getPoints()); // ברירת מחדל
-
 
                 //  הגדרת הטקסט
                 holder.username.setText(model.getUsername());
@@ -118,7 +135,44 @@ public class LEADERBOARD extends Fragment {
                         break;
                 }
 
+                holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // שימוש ב-MaterialAlertDialogBuilder למראה מודרני
+                        new com.google.android.material.dialog.MaterialAlertDialogBuilder(holder.itemView.getContext())
+                                .setTitle("מחיקת שחקן")
+                                .setMessage("האם אתה בטוח שברצונך למחוק את " + model.getUsername() + "? פעולה זו אינה ניתנת לביטול.")
+                                .setIcon(android.R.drawable.ic_menu_delete) // הוספת אייקון של פח
+
+                                // עיצוב כפתור האישור
+                                .setPositiveButton("מחק", (dialog, which) -> {
+                                    String documentId = getSnapshots().getSnapshot(holder.getBindingAdapterPosition()).getId();
+                                    deletePlayer(documentId);
+                                })
+
+                                // עיצוב כפתור הביטול
+                                .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
+
+                                // אפשרות להוסיף צבעים מותאמים אישית אם תרצה (אופציונלי)
+                                .show();
+                    }
+                });
+
                 holder.itemView.setBackground(shape);
+            }
+
+            private void deletePlayer(String docId) {
+                FirebaseFirestore.getInstance()
+                        .collection("leaderboard")
+                        .document(docId)
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            // המחיקה הצליחה - ה-FirestoreRecyclerAdapter יתעדכן אוטומטית בתצוגה
+                            if (adapter != null) adapter.notifyDataSetChanged();
+                        })
+                        .addOnFailureListener(e -> {
+                            // טיפול בשגיאה במידת הצורך
+                        });
             }
 
             private int calculateRank(int currentPos, long currentPoints) {
@@ -155,12 +209,13 @@ public class LEADERBOARD extends Fragment {
 
     // ViewHolder פנימי לניהול התצוגה של כל שורה
     private static class PlayerViewHolder extends RecyclerView.ViewHolder {
-        TextView username, points;
+        TextView username, points, btnDelete; // הוספנו btnDelete
 
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.tvUsername);
             points = itemView.findViewById(R.id.tvPoints);
+            btnDelete = itemView.findViewById(R.id.btnDelete); // וודא שזה ה-ID ב-XML
         }
     }
 

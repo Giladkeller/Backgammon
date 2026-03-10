@@ -45,4 +45,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
     implementation("androidx.media:media:1.6.0")
+    implementation("com.google.android.material:material:1.9.0")
 }

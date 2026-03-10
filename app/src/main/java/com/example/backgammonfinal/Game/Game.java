@@ -174,13 +174,11 @@ public class Game extends Fragment implements View.OnClickListener {
     }
 
     private void setupStartingPosition() {
-        // לבן (White)
         addSoldiers(0, "brown", 2);
         addSoldiers(11, "brown", 5);
         addSoldiers(16, "brown", 3);
         addSoldiers(18, "brown", 5);
 
-        // חום (Brown)
         addSoldiers(23, "white", 2);
         addSoldiers(12, "white", 5);
         addSoldiers(7, "white", 3);
@@ -778,11 +776,20 @@ public class Game extends Fragment implements View.OnClickListener {
         }
         //throw cubes
         if (imgCubes.getId() == view.getId()) {
-            throwCubes();
-            if (cantMove(layouts, turn)) {
-                Toast.makeText(getContext(), "you dont have what to do", Toast.LENGTH_SHORT).show();
-            }
-            return;
+            throwCubes(); // כאן הקוביות הופכות ל-VISIBLE בזיכרון
+
+            // יצירת השהיה כדי שהמשתמש יראה את הקוביות לפני הבדיקה
+            new android.os.Handler().postDelayed(() -> {
+                // הבדיקה תתבצע רק אחרי 700 מילי-שניות
+                if (cantMove(layouts, turn)) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), "you don't have what to do" , Toast.LENGTH_SHORT).show();
+                    }
+                    changTurn(); // העברת התור בצורה מסודרת
+                }
+            }, 1000); // 700 מילי-שניות זה זמן אידיאלי לקליטה בעין
+
+            return; // ה-return קורה מיד, אבל ה-Handler ירוץ ברקע בעוד רגע
         }
 
         for (int g = 0; g < 24; g++) {

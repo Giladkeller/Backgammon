@@ -56,6 +56,11 @@
                 <TextView
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
                     android:text="#"
                     android:textColor="#A68966"
                     android:textStyle="bold" />
@@ -77,12 +82,25 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewLeaderboard"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewLeaderboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clipToPadding="false" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="#A68966"
+                    android:visibility="visible" />
+            </FrameLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
