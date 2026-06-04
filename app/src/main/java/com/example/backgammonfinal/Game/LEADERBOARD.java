@@ -118,21 +118,25 @@ public class LEADERBOARD extends Fragment {
                         shape.setColor(Color.parseColor("#FFD700"));
                         holder.username.setText("👑 " + model.getUsername());
                         holder.username.setTextSize(30);
+                        holder.points.setTextSize(30);
                         break;
                     case 2: // מקום שני
                         shape.setColor(Color.parseColor("#C0C0C0"));
                         holder.username.setText("🥈 " + model.getUsername());
                         holder.username.setTextSize(25);
+                        holder.points.setTextSize(25);
                         break;
                     case 3: // מקום שלישי
                         shape.setColor(Color.parseColor("#CD7F32"));
                         holder.username.setText("🥉 " + model.getUsername());
                         holder.username.setTextSize(21);
+                        holder.points.setTextSize(21);
                         break;
                     default: // כל השאר
                         shape.setColor(Color.parseColor("#e8b961")); // כחול בהיר
                         holder.username.setText(" " + displayRank + ". " + model.getUsername());
                         holder.username.setTextSize(18);
+                        holder.points.setTextSize(18);
                         break;
                 }
 
