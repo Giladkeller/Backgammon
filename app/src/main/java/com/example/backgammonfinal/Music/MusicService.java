@@ -16,12 +16,25 @@ import androidx.media.app.NotificationCompat.MediaStyle;
 
 import com.example.backgammonfinal.R;
 
+import java.util.ArrayList;
+
 public class MusicService extends Service {
     private MediaPlayer mediaPlayer;
     private final IBinder binder = new MusicBinder();
-    private Uri currentUri;
     private MediaSessionCompat mediaSession;
-    private String lastSongTitle = "שש-בש מוזיקה";
+    private ArrayList<Uri> playlist = new ArrayList<>();
+    private ArrayList<String> songTitles = new ArrayList<>();
+    private int currentTrackIndex = 0;
+
+    // ממשק (Interface) שיאפשר לעדכן את האקטיביטי כשהשיר מתחלף אוטומטית ברקע
+    public interface OnTrackChangedListener {
+        void onTrackChanged(Uri uri, String title);
+    }
+    private OnTrackChangedListener trackChangedListener;
+
+    public void setOnTrackChangedListener(OnTrackChangedListener listener) {
+        this.trackChangedListener = listener;
+    }
 
     public static final String ACTION_PLAY_PAUSE = "action_play_pause";
     private static final String CHANNEL_ID = "music_channel";
@@ -37,15 +50,65 @@ public class MusicService extends Service {
         createNotificationChannel();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && ACTION_PLAY_PAUSE.equals(intent.getAction())) {
-            togglePlayPause();
-            // עדכון ההתראה כדי לשקף את המצב החדש (Play/Pause)
-            showNotification(lastSongTitle);
+    public void setPlaylist(ArrayList<Uri> uris, ArrayList<String> titles) {
+        this.playlist = uris;
+        this.songTitles = titles;
+        this.currentTrackIndex = 0;
+        if (!playlist.isEmpty()) {
+            playCurrentTrack();
         }
-        return START_STICKY;
     }
+
+    // מתודת הניגון הפנימית של הרצועה הנוכחית
+    private void playCurrentTrack() {
+        if (playlist.isEmpty() || currentTrackIndex >= playlist.size()) {
+            // אם הגענו לסוף הרשימה, נחזור להתחלה
+            currentTrackIndex = 0;
+            if (playlist.isEmpty()) return;
+        }
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+
+        Uri uri = playlist.get(currentTrackIndex);
+        String title = songTitles.get(currentTrackIndex);
+
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(this, uri);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+
+            mediaPlayer.setLooping(false);
+
+            // מנגנון המעבר האוטומטי: כשהשיר מסתיים, המשתנה מקודם והשיר הבא מנוגן
+            mediaPlayer.setOnCompletionListener(mp -> {
+                currentTrackIndex++;
+                playCurrentTrack();
+            });
+
+            // עדכון ההתראה בוילון
+            showNotification(title);
+
+            // עדכון ה-UI באקטיביטי במידה והיא פתוחה ומחוברת
+            if (trackChangedListener != null) {
+                trackChangedListener.onTrackChanged(uri, title);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        if (intent != null && ACTION_PLAY_PAUSE.equals(intent.getAction())) {
+//            togglePlayPause();
+//            // עדכון ההתראה כדי לשקף את המצב החדש (Play/Pause)
+//            showNotification(lastSongTitle);
+//        }
+//        return START_STICKY;
+//    }
 
     // פונקציה שנקראת כשהמשתמש סוגר את האפליקציה מהתפריט הראשי
     @Override
@@ -55,38 +118,48 @@ public class MusicService extends Service {
         stopSelf();
     }
 
-    public void playSong(Uri uri, String songName) {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
+//    public void playSong(Uri uri, String songName) {
+//        if (mediaPlayer != null) {
+//            mediaPlayer.release();
+//        }
+//        currentUri = uri;
+//        lastSongTitle = songName;
+//        mediaPlayer = new MediaPlayer();
+//        try {
+//            mediaPlayer.setDataSource(this, uri);
+//            mediaPlayer.prepare();
+//            mediaPlayer.start();
+//            mediaPlayer.setLooping(true);
+//            showNotification(songName);
+//        } catch (Exception e) { e.printStackTrace(); }
+//    }
+
+    public boolean isPlaying() { return mediaPlayer != null && mediaPlayer.isPlaying(); }
+    public Uri getCurrentUri() {
+        if (!playlist.isEmpty() && currentTrackIndex < playlist.size()) {
+            return playlist.get(currentTrackIndex);
         }
-        currentUri = uri;
-        lastSongTitle = songName;
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(this, uri);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            mediaPlayer.setLooping(true);
-            showNotification(songName);
-        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+
+    public String getCurrentTitle() {
+        if (!songTitles.isEmpty() && currentTrackIndex < songTitles.size()) {
+            return songTitles.get(currentTrackIndex);
+        }
+        return "שש-בש מוזיקה";
     }
 
     public void togglePlayPause() {
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
-                // כשהמוזיקה מושהית, מפסיקים את ה-Foreground כדי שיהיה אפשר להעלים את ההתראה
                 stopForeground(false);
             } else {
                 mediaPlayer.start();
-                // כשחוזרים לנגן, חייבים להחזיר ל-Foreground
-                showNotification(lastSongTitle);
+                showNotification(getCurrentTitle());
             }
         }
     }
-
-    public boolean isPlaying() { return mediaPlayer != null && mediaPlayer.isPlaying(); }
-    public Uri getCurrentUri() { return currentUri; }
 
     private void showNotification(String title) {
         Intent notificationIntent = new Intent(this, MusicActivity.class);
@@ -99,8 +172,7 @@ public class MusicService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(title)
-                .setContentText("שש-בש מוזיקה")
+                .setContentTitle("Backgammon Music: " + title)
                 .setOngoing(isPlaying())
                 .setContentIntent(pendingIntent)
                 .addAction(new NotificationCompat.Action(icon, isPlaying() ? "Pause" : "Play", playPausePending))
@@ -109,7 +181,7 @@ public class MusicService extends Service {
                         .setShowActionsInCompactView(0)) // מציג את כפתור ה-Play/Pause גם בהתראה המצומצמת
                 .setPriority(NotificationCompat.PRIORITY_LOW);
 
-        // אם מנגן - מפעיל Foreground Service. אם לא - רק מעדכן את ההתראה.
+        // אם מנגן - מפעיל Foreground Service אם לא - רק מעדכן את ההתראה
         if (isPlaying()) {
             startForeground(1, builder.build());
         } else {

@@ -4,7 +4,7 @@ public class Player {
     private String username;
     private long points;
 
-    // חובה: קונסטרקטור ריק עבור Firebase
+    // קונסטרקטור ריק עבור Firebase
     public Player() {}
 
     public Player(String username, long points) {
@@ -12,7 +12,6 @@ public class Player {
         this.points = points;
     }
 
-    // ה-Getters חייבים להתאים בדיוק לשמות השדות ב-Firebase
     public String getUsername()
     {
         return username;

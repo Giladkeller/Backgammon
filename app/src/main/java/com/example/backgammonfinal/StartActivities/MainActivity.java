@@ -1,5 +1,6 @@
 package com.example.backgammonfinal.StartActivities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         this.isFirstTime = true;
-// **** SQLite database
+//SQLite database
         dbHelper = new DatabaseHelper(this);
 //toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // 2. יצירת Bundle והעברת נתון (למשל: האם להסתיר כפתור)
             Bundle args = new Bundle();
-            args.putBoolean("btnBackToGame", true); // שלח "אמת" אם תרצה להסתיר
+            args.putBoolean("btnBackToGame", true);
             leaderboardFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
@@ -140,17 +141,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addToBackStack(null)
                     .commit();
         }
-//        if (v.getId() == imgBack.getId()) {
-//            findViewById(R.id.main_container).setVisibility(View.GONE);
-//            findViewById(R.id.main_menu_layout).setVisibility(View.VISIBLE);
-//        }
-//        if (v.getId() == btnMusic.getId()) {
-//            intent = new Intent(this, MusicList.class);
-//            startActivity(intent);
-//        }
+
         if (v.getId() == btnExit.getId()) {
-// This will finish the current activity and all activities in the task.
-            finishAffinity();
+            new AlertDialog.Builder(this)
+                    .setTitle("WAIT")
+                    .setMessage("Are you sure you want to exit?")
+                    .setIcon(R.drawable.stop)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        finishAffinity();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         }
     }
     public void createLoginDialog() {
@@ -167,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 createRegistrationDialog();
             }
         });
-        //tvDMessage.setVisibility(View.INVISIBLE);
         editdUsername = (EditText) dialog.findViewById(R.id.edUsername);
         editDPassword = (EditText) dialog.findViewById(R.id.edPassword);
         btnDlogin = (Button) dialog.findViewById(R.id.btnLogin);
@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("USERNAME", username);
                     startActivity(intent);
                     finish();
-// Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Login failed please sign in first");
                 }
@@ -255,8 +254,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvDMessage.setVisibility(View.VISIBLE);
                 if (isRegistered) {
                     tvDMessage.setText("Registration successful");
-//                    dialog.dismiss();
-//                    createLoginDialog();
                     SharedPreferences sharedPreferences =
                             getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -266,7 +263,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("USERNAME", username);
                     startActivity(intent);
                     finish();
-// Optionally, navigate to LoginActivity here.
                 } else {
                     tvDMessage.setText("Registration failed user/main exist");
                 }

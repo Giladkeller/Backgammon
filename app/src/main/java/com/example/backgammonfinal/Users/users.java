@@ -149,6 +149,14 @@ public class users extends AppCompatActivity implements View.OnClickListener {
                     dialog.dismiss();
                 });
                 builder.show();
+            } else if (name1.equals(name2)){
+                builder = new AlertDialog.Builder(users.this);
+                builder.setTitle("Error");
+                builder.setMessage("UserName Can't Be The Same");
+                builder.setPositiveButton("ok", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                builder.show();
             }
             else {
                 // הכנת המשפט להקראה

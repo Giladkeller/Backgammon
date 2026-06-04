@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.backgammonfinal.StartActivities.MainActivity;
-import com.example.backgammonfinal.Users.MainPagerAdapter;
 import com.example.backgammonfinal.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -59,6 +58,8 @@ public class GameActivity extends AppCompatActivity {
 
         MainPagerAdapter adapter = new MainPagerAdapter(this,p1Name, p2Name);
         viewPager.setAdapter(adapter);
+
+        viewPager.setCurrentItem(1);
 
         viewPager.setOffscreenPageLimit(3);
 

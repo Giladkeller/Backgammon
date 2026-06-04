@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_USERNAME + "=? OR " + COLUMN_EMAIL + "=?",
                 new String[]{username, email});
         if (cursor.moveToFirst()) {
-// User with the given username or email already exists.
+// User with the given username or email already exists
             cursor.close();
             db.close();
             return false; // or handle the error as needed

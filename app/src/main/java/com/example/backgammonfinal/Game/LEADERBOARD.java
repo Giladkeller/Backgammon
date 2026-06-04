@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -70,7 +71,7 @@ public class LEADERBOARD extends Fragment {
         //  הגדרת האופציות לאדפטר
         FirestoreRecyclerOptions<Player> options = new FirestoreRecyclerOptions.Builder<Player>()
                 .setQuery(query, Player.class)
-                .setLifecycleOwner(this) // חיבור למחזור החיים של הפרגמנט - קריטי לעדכון חי!
+                .setLifecycleOwner(this) // חיבור למחזור החיים של הפרגמנט
                 .build();
 
         //  יצירת האדפטר (איך להציג כל נתון בתוך ה-XML)
@@ -103,7 +104,7 @@ public class LEADERBOARD extends Fragment {
                 shape.setStroke(3, Color.parseColor("#808080")); // עובי מסגרת וצבע אפור
 
                 //  הגדרת רווח בין השורות (Margins) והגדלת הגובה
-                // שים לב: השתמש ב-LayoutParams שמתאים למה שעוטף את ה-item_player (כנראה RecyclerView.LayoutParams)
+                //  שימוש ב-LayoutParams שמתאים למה שעוטף את ה-item_player
                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
                 layoutParams.setMargins(20, 10, 20, 30); // שמאל, למעלה, ימין, למטה (ה-30 יוצר את הרווח)
                 holder.itemView.setLayoutParams(layoutParams);
@@ -116,29 +117,29 @@ public class LEADERBOARD extends Fragment {
                     case 1: // מקום ראשון
                         shape.setColor(Color.parseColor("#FFD700"));
                         holder.username.setText("👑 " + model.getUsername());
-                        holder.username.setTextSize(22);
+                        holder.username.setTextSize(30);
                         break;
                     case 2: // מקום שני
                         shape.setColor(Color.parseColor("#C0C0C0"));
                         holder.username.setText("🥈 " + model.getUsername());
-                        holder.username.setTextSize(20);
+                        holder.username.setTextSize(25);
                         break;
                     case 3: // מקום שלישי
                         shape.setColor(Color.parseColor("#CD7F32"));
                         holder.username.setText("🥉 " + model.getUsername());
-                        holder.username.setTextSize(18);
+                        holder.username.setTextSize(21);
                         break;
                     default: // כל השאר
-                        shape.setColor(Color.WHITE);
+                        shape.setColor(Color.parseColor("#e8b961")); // כחול בהיר
                         holder.username.setText(" " + displayRank + ". " + model.getUsername());
-                        holder.username.setTextSize(16);
+                        holder.username.setTextSize(18);
                         break;
                 }
 
                 holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // שימוש ב-MaterialAlertDialogBuilder למראה מודרני
+                        // שימוש ב-MaterialAlertDialogBuilder לנראות
                         new com.google.android.material.dialog.MaterialAlertDialogBuilder(holder.itemView.getContext())
                                 .setTitle("מחיקת שחקן")
                                 .setMessage("האם אתה בטוח שברצונך למחוק את " + model.getUsername() + "? פעולה זו אינה ניתנת לביטול.")
@@ -153,7 +154,6 @@ public class LEADERBOARD extends Fragment {
                                 // עיצוב כפתור הביטול
                                 .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
 
-                                // אפשרות להוסיף צבעים מותאמים אישית אם תרצה (אופציונלי)
                                 .show();
                     }
                 });
@@ -209,13 +209,14 @@ public class LEADERBOARD extends Fragment {
 
     // ViewHolder פנימי לניהול התצוגה של כל שורה
     private static class PlayerViewHolder extends RecyclerView.ViewHolder {
-        TextView username, points, btnDelete; // הוספנו btnDelete
+        TextView username, points;
+        ImageView btnDelete;
 
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.tvUsername);
             points = itemView.findViewById(R.id.tvPoints);
-            btnDelete = itemView.findViewById(R.id.btnDelete); // וודא שזה ה-ID ב-XML
+            btnDelete = itemView.findViewById(R.id.btnDelete);
         }
     }
 
