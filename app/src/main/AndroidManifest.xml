@@ -23,13 +23,14 @@
         android:theme="@style/Theme.BackGammonFinal">
         <service
             android:name=".Music.MusicService"
-            android:foregroundServiceType="mediaPlayback"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
         <activity
             android:name=".Music.MusicActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".StartActivities.MainActivity"
             android:exported="false"

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -58,6 +59,12 @@ public class OpenActivity extends AppCompatActivity {
             return insets;
         });
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
+
         new Handler(Looper.getMainLooper()).postDelayed(() ->{
             Intent intent = new Intent(OpenActivity.this, MainActivity.class);
             startActivity(intent);
@@ -68,102 +75,6 @@ public class OpenActivity extends AppCompatActivity {
                 .setPersistenceEnabled(true)
                 .build();
         FirebaseFirestore.getInstance().setFirestoreSettings(settings);
-    }
-
-    public void createSignInDialog() {
-        signinDialog = new Dialog(this);
-
-        signinDialog.setContentView(R.layout.signin);
-
-        signinDialog.setTitle("please register to my app");
-
-        signinDialog.setCancelable(true);
-
-        tvDMessage = (TextView) signinDialog.findViewById(R.id.tvSignin);
-        editDUsername = (EditText) signinDialog.findViewById(R.id.edUsername);
-        editDEmail = (EditText) signinDialog.findViewById(R.id.edEmail);
-        editDPassword = (EditText) signinDialog.findViewById(R.id.edPassword);
-        btnDGoBack = (Button) signinDialog.findViewById(R.id.btnRegister);
-
-        btnDGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userName = editDUsername.getText().toString().trim();
-                intent = new Intent(OpenActivity.this, MainActivity.class);
-                intent.putExtra("USERNAME_KEY" , userName);
-
-                if (editDUsername.getText().toString().isEmpty()||editDPassword.getText().toString().isEmpty()||editDEmail.getText().toString().isEmpty()){
-                    builder = new AlertDialog.Builder(OpenActivity.this);
-                    builder.setTitle("Error");
-                    builder.setMessage("UserName, Password or Email Null");
-                    builder.setPositiveButton("ok", (dialog, which) -> {
-                        dialog.dismiss();
-                    });
-                    builder.setNegativeButton("I have account!", (dialog , which) -> {
-                        dialog.dismiss();
-                        signinDialog.dismiss();
-                        createLoginDialog();
-                    });
-                    builder.show();
-                }
-                else
-                    startActivity(intent);
-            }
-        });
-
-        signinDialog.show();
-    }
-
-    public void createLoginDialog() {
-        loginDialog = new Dialog(this);
-
-        loginDialog.setContentView(R.layout.login);
-
-        loginDialog.setTitle("please Login to my app");
-
-        loginDialog.setCancelable(true);
-
-
-        tvDMessage = (TextView) loginDialog.findViewById(R.id.tvLogin);
-        btnNewAccount = (TextView) loginDialog.findViewById(R.id.btnNewAccount);
-        editDUsername = (EditText) loginDialog.findViewById(R.id.edUsername);
-        editDPassword = (EditText) loginDialog.findViewById(R.id.edPassword);
-        btnDGoBack = (Button) loginDialog.findViewById(R.id.btnLogin);
-        btnNewAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginDialog.dismiss();
-                createSignInDialog();
-            }
-        });
-        btnDGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                userName = editDUsername.getText().toString().trim();
-                intent = new Intent(OpenActivity.this, MainActivity.class);
-                intent.putExtra("USERNAME_KEY" , userName);
-
-                if (editDUsername.getText().toString().isEmpty()||editDPassword.getText().toString().isEmpty()){
-                    builder = new AlertDialog.Builder(OpenActivity.this);
-                    builder.setTitle("Error");
-                    builder.setMessage("UserName or Password Null");
-                    builder.setPositiveButton("ok", (dialog, which) -> {
-                        dialog.dismiss();
-                    });
-                    builder.setNegativeButton("New User?", (dialog , which) -> {
-                        dialog.dismiss();
-                        loginDialog.dismiss();
-                       createSignInDialog();
-                    });
-                    builder.show();
-                }
-                else
-                    startActivity(intent);
-            }
-        });
-
-        loginDialog.show();
     }
 }
 

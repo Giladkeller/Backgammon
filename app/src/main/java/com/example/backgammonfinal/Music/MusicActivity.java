@@ -18,6 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.backgammonfinal.StartActivities.MainActivity;
 import com.example.backgammonfinal.R;
+
+import java.util.ArrayList;
 
 public class MusicActivity extends AppCompatActivity {
 
@@ -44,6 +47,13 @@ public class MusicActivity extends AppCompatActivity {
             musicService = binder.getService();
             isBound = true;
 
+            musicService.setOnTrackChangedListener((uri, title) -> {
+                runOnUiThread(() -> {
+                    tvSongName.setText(title);
+                    updatePlayPauseIcon();
+                });
+            });
+
             // עדכון ה-UI אם שיר כבר מתנגן ברקע
             if (musicService.getCurrentUri() != null) {
                 updateUIForTrack(musicService.getCurrentUri());
@@ -60,6 +70,12 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
 
         // אתחול הרשאות להתראות (עבור Android 13+)
         initPermissionLauncher();
@@ -89,6 +105,7 @@ public class MusicActivity extends AppCompatActivity {
             Intent pickIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             pickIntent.addCategory(Intent.CATEGORY_OPENABLE);
             pickIntent.setType("audio/*");
+            pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             pickIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             songPickerLauncher.launch(pickIntent);
         });
@@ -128,11 +145,31 @@ public class MusicActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        if (uri != null && isBound) {
-                            String title = getSongTitle(uri);
-                            musicService.playSong(uri, title);
-                            updateUIForTrack(uri);
+                        ArrayList<Uri> uris = new ArrayList<>();
+                        ArrayList<String> titles = new ArrayList<>();
+
+                        Intent dataIntent = result.getData();
+
+                        // בדיקה האם המשתמש בחר מספר שירים
+                        if (dataIntent.getClipData() != null) {
+                            int count = dataIntent.getClipData().getItemCount();
+                            for (int i = 0; i < count; i++) {
+                                Uri uri = dataIntent.getClipData().getItemAt(i).getUri();
+                                uris.add(uri);
+                                titles.add(getSongTitle(uri));
+                            }
+                        }
+                        // אם המשתמש בחר רק שיר אחד
+                        else if (dataIntent.getData() != null) {
+                            Uri uri = dataIntent.getData();
+                            uris.add(uri);
+                            titles.add(getSongTitle(uri));
+                        }
+
+                        // שליחת הרשימה המלאה לשירות המוזיקה
+                        if (!uris.isEmpty() && isBound) {
+                            musicService.setPlaylist(uris, titles);
+                            updateUIForTrack(uris.get(0)); // מציג על המסך את השיר הראשון שהתחיל
                         }
                     }
                 }
